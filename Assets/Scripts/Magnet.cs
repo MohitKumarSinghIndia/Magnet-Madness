@@ -111,8 +111,11 @@ public class Magnet : MonoBehaviour
 
         GameManager.Instance.RegisterMagnetInCircle(this);
         GameManager.Instance.RemoveMagnetFromPlayer(owner);
+        GameManager.Instance.AddPlaced(owner);
 
         CheckHits();
+
+        GameManager.Instance.CheckWinCondition();
         GameManager.Instance.SwitchTurn();
     }
 
@@ -126,38 +129,24 @@ public class Magnet : MonoBehaviour
 
             if (colliderRef.IsTouching(other.GetComponent<Collider2D>()))
             {
-                // ------------------------------
-                // 1. REMOVE touched magnet from circle
-                // ------------------------------
+                // Remove OTHER magnet
                 GameManager.Instance.UnregisterMagnetFromCircle(other);
-
-                // 2. Touched magnet returns to holder give magnet back
-                GameManager.Instance.AddMagnetToPlayer(this.owner);
-
-                // 3. Respawn touched magnet
-                GameManager.Instance.magnetSpawner.RespawnMagnet(this.owner);
+                GameManager.Instance.AddMagnetToPlayer(owner);
+                GameManager.Instance.RemovePlaced(owner);
+                GameManager.Instance.magnetSpawner.RespawnMagnet(owner);
 
                 Destroy(other.gameObject);
 
-                // ------------------------------
-                // 4. REMOVE this magnet from circle
-                // ------------------------------
+                // Remove THIS magnet
                 GameManager.Instance.UnregisterMagnetFromCircle(this);
-
-                // 5. This magnet returns give magnet back
-                GameManager.Instance.AddMagnetToPlayer(this.owner);
-
-                // 6. Actually move this magnet back to slot
+                GameManager.Instance.AddMagnetToPlayer(owner);
+                GameManager.Instance.RemovePlaced(owner);
                 ReturnToSlot();
 
                 hasBeenDropped = false;
                 isInCircle = false;
 
-                // ------------------------------
-                // 7. Update UI now
-                // ------------------------------
                 UIManager.Instance.UpdateUI();
-
                 return;
             }
         }
@@ -174,11 +163,5 @@ public class Magnet : MonoBehaviour
         Vector3 pos = screenPos;
         pos.z = -mainCamera.transform.position.z;
         return mainCamera.ScreenToWorldPoint(pos);
-    }
-
-    void OnDestroy()
-    {
-        if (isInCircle)
-            GameManager.Instance.UnregisterMagnetFromCircle(this);
     }
 }

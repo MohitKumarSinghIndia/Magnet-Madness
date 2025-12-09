@@ -18,7 +18,7 @@ public class CircleAreaHighlighter : MonoBehaviour
         }
 
         // Highlight based on current turn
-        if (GameManager.Instance.GetCurrentTurn() == PlayerTurn.Player1)
+        if (GameManager.Instance.currentTurn == PlayerTurn.Player1)
         {
             circleRenderer.color = player1Highlight;
         }

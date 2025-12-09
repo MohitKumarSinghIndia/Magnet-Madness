@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum PlayerTurn { Player1, Player2 }
@@ -21,8 +21,11 @@ public class GameManager : MonoBehaviour
     [Header("Spawner")]
     public MagnetSpawner magnetSpawner;
 
-    [HideInInspector] public int player1Magnets;
-    [HideInInspector] public int player2Magnets;
+    public int player1Magnets;      // INVENTORY
+    public int player2Magnets;      // INVENTORY
+
+    public int player1Placed = 0;   // MAGNETS IN CIRCLE
+    public int player2Placed = 0;   // MAGNETS IN CIRCLE
 
     public PlayerTurn currentTurn = PlayerTurn.Player1;
 
@@ -44,19 +47,23 @@ public class GameManager : MonoBehaviour
         player1Magnets = initialMagnetCount;
         player2Magnets = initialMagnetCount;
 
+        player1Placed = 0;
+        player2Placed = 0;
+
+        magnetsInCircle.Clear();
+
         magnetSpawner.SpawnPlayerMagnets();
 
-        UIManager.Instance.UpdateUI();
+        UIManager.Instance.InitializeUI();
     }
 
     // ------------------ TURN LOGIC ------------------
     public void SwitchTurn()
     {
         currentTurn = currentTurn == PlayerTurn.Player1 ? PlayerTurn.Player2 : PlayerTurn.Player1;
+
         UIManager.Instance.UpdateUI();
     }
-
-    public PlayerTurn GetCurrentTurn() => currentTurn;
 
     // ------------------ PLAYER INVENTORY ------------------
     public void AddMagnetToPlayer(PlayerTurn p)
@@ -72,24 +79,32 @@ public class GameManager : MonoBehaviour
         if (p == PlayerTurn.Player1) player1Magnets--;
         else player2Magnets--;
 
-        CheckWinCondition();
         UIManager.Instance.UpdateUI();
     }
 
-    public int GetPlayerMagnetCount(PlayerTurn p)
+    // ------------------ PLACED COUNTERS ------------------
+    public void AddPlaced(PlayerTurn p)
     {
-        return (p == PlayerTurn.Player1) ? player1Magnets : player2Magnets;
+        if (p == PlayerTurn.Player1) player1Placed++;
+        else player2Placed++;
+    }
+
+    public void RemovePlaced(PlayerTurn p)
+    {
+        if (p == PlayerTurn.Player1) player1Placed--;
+        else player2Placed--;
     }
 
     // ------------------ WIN CHECK ------------------
-    void CheckWinCondition()
+    public void CheckWinCondition()
     {
-        // If player placed all their magnets in the circle they win
-        if (player1Magnets <= 0)
+        if (player1Placed == initialMagnetCount)
             UIManager.Instance.ShowWin(PlayerTurn.Player1);
 
-        if (player2Magnets <= 0)
+        if (player2Placed == initialMagnetCount)
             UIManager.Instance.ShowWin(PlayerTurn.Player2);
+
+        Debug.Log("CheckWinCondition");
     }
 
     // ------------------ CIRCLE LOGIC ------------------
@@ -109,36 +124,9 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver()
     {
-        return player1Magnets <= 0 || player2Magnets <= 0;
+        return player1Placed == initialMagnetCount || player2Placed == initialMagnetCount;
     }
 
-    public void OnRestartButtonClicked()
-    {
-        // 1. Clear all magnets currently in circle
-        foreach (Magnet m in new List<Magnet>(magnetsInCircle))
-        {
-            if (m != null)
-                Destroy(m.gameObject);
-        }
-        magnetsInCircle.Clear();
-
-        // 2. Clear holders
-        ClearHolder(player1MagnetHolder);
-        ClearHolder(player2MagnetHolder);
-
-        // 3. Reset counts
-        player1Magnets = initialMagnetCount;
-        player2Magnets = initialMagnetCount;
-
-        // 4. Reset turn
-        currentTurn = PlayerTurn.Player1;
-
-        // 5. Spawn fresh magnets
-        magnetSpawner.SpawnPlayerMagnets();
-
-        // 6. Update UI
-        UIManager.Instance.UpdateUI();
-    }
     void ClearHolder(Transform holder)
     {
         foreach (Transform slot in holder)
@@ -148,4 +136,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnRestartButtonClicked()
+    {
+        foreach (Magnet m in new List<Magnet>(magnetsInCircle))
+        {
+            if (m != null)
+                Destroy(m.gameObject);
+        }
+        magnetsInCircle.Clear();
+
+        ClearHolder(player1MagnetHolder);
+        ClearHolder(player2MagnetHolder);
+
+        player1Magnets = initialMagnetCount;
+        player2Magnets = initialMagnetCount;
+
+        player1Placed = 0;
+        player2Placed = 0;
+
+        currentTurn = PlayerTurn.Player1;
+
+        magnetSpawner.SpawnPlayerMagnets();
+
+        UIManager.Instance.InitializeUI();
+    }
 }
