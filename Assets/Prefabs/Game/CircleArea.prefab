@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1391585642919221090}
   - component: {fileID: 5357454252829964160}
   - component: {fileID: 7226096560518892453}
-  - component: {fileID: 1788240044723083325}
   m_Layer: 0
   m_Name: CircleArea
   m_TagString: Untagged
@@ -30,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -82,8 +81,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 13cdd564b8d465a45bbb99dfa3ff2b47, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: -1193016697, guid: 85703ee0d52ea0d479ea35a4259a0b41, type: 3}
+  m_Color: {r: 0.85660374, g: 0.53538275, b: 0.12121739, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -128,7 +127,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.43
+  m_Radius: 2
 --- !u!50 &7226096560518892453
 Rigidbody2D:
   serializedVersion: 5
@@ -156,19 +155,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1788240044723083325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6295792766466684394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d87b793003406b14e851950c3de6b2d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CircleAreaHighlighter
-  circleRenderer: {fileID: 1391585642919221090}
-  player1Highlight: {r: 0, g: 0, b: 1, a: 1}
-  player2Highlight: {r: 1, g: 0, b: 0, a: 1}
-  defaultColor: {r: 1, g: 1, b: 1, a: 1}

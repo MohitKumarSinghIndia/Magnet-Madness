@@ -12,6 +12,9 @@ public class Magnet : MonoBehaviour
     private bool isInCircle = false;
     private bool hasBeenDropped = false;
 
+    public Color player1Color = Color.blue;
+    public Color player2Color = Color.red;
+
     private Vector3 dragOffset;
 
     private Camera mainCamera;
@@ -28,13 +31,13 @@ public class Magnet : MonoBehaviour
 
     void Start()
     {
-        rendererRef.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
+        rendererRef.color = (owner == PlayerTurn.Player1) ? player1Color : player2Color;
     }
 
     public void SetOwner(PlayerTurn p)
     {
         owner = p;
-        rendererRef.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
+        rendererRef.color = (owner == PlayerTurn.Player1) ? player1Color : player2Color;
     }
 
     public void SetSlotIndex(int index)
