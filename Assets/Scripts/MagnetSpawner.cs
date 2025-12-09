@@ -1,77 +1,75 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class MagnetSpawner : MonoBehaviour
 {
-    [Header("Magnet Prefab")]
     public GameObject magnetPrefab;
 
-    [Header("Spawn Settings")]
-    public int magnetsPerPlayer = 5;
-    public float spacing = 1f;
+    public List<Transform> player1Slots;
+    public List<Transform> player2Slots;
 
-    void Start()
+    public Dictionary<PlayerTurn, List<Transform>> playerSlots;
+
+    void Awake()
     {
-        SpawnPlayerMagnets();
+        playerSlots = new Dictionary<PlayerTurn, List<Transform>>
+        {
+            { PlayerTurn.Player1, player1Slots },
+            { PlayerTurn.Player2, player2Slots }
+        };
     }
 
-    void SpawnPlayerMagnets()
+    public void SpawnPlayerMagnets()
     {
-        if (magnetPrefab == null)
-        {
-            Debug.LogError("Magnet prefab is not assigned!");
-            return;
-        }
+        SpawnFor(PlayerTurn.Player1, GameManager.Instance.initialMagnetCount);
+        SpawnFor(PlayerTurn.Player2, GameManager.Instance.initialMagnetCount);
+    }
 
-        if (GameManager.Instance.player1MagnetHolder == null ||
-            GameManager.Instance.player2MagnetHolder == null)
-        {
-            Debug.LogError("Player magnet holders are not assigned in GameManager!");
-            return;
-        }
+    void SpawnFor(PlayerTurn owner, int count)
+    {
+        var slots = playerSlots[owner];
 
-        // Spawn Player 1 magnets
-        for (int i = 0; i < magnetsPerPlayer; i++)
+        for (int i = 0; i < count; i++)
         {
-            Vector3 spawnPosition = GameManager.Instance.player1MagnetHolder.position +
-                                   new Vector3(i * spacing, 0, 0);
-            SpawnMagnet(spawnPosition, PlayerTurn.Player1, GameManager.Instance.player1MagnetHolder);
-        }
+            GameObject obj = Instantiate(magnetPrefab, slots[i]);
+            obj.transform.localPosition = Vector3.zero;
 
-        // Spawn Player 2 magnets
-        for (int i = 0; i < magnetsPerPlayer; i++)
-        {
-            Vector3 spawnPosition = GameManager.Instance.player2MagnetHolder.position +
-                                   new Vector3(i * spacing, 0, 0);
-            SpawnMagnet(spawnPosition, PlayerTurn.Player2, GameManager.Instance.player2MagnetHolder);
+            Magnet m = obj.GetComponent<Magnet>();
+            m.SetOwner(owner);
+            m.SetSlotIndex(i);
         }
     }
 
-    void SpawnMagnet(Vector3 position, PlayerTurn owner, Transform parent)
+    int GetFreeSlot(PlayerTurn owner)
     {
-        GameObject magnetObj = Instantiate(magnetPrefab, position, Quaternion.identity, parent);
-        Magnet magnet = magnetObj.GetComponent<Magnet>();
+        var slots = playerSlots[owner];
+        bool[] used = new bool[slots.Count];
 
-        if (magnet != null)
+        foreach (Transform slot in slots)
         {
-            magnet.SetOwner(owner);
+            if (slot.childCount > 0)
+            {
+                Magnet m = slot.GetChild(0).GetComponent<Magnet>();
+                if (m != null) used[m.slotIndex] = true;
+            }
         }
 
-        magnetObj.name = owner.ToString() + "_Magnet";
+        for (int i = 0; i < used.Length; i++)
+            if (!used[i]) return i;
+
+        return slots.Count - 1;
     }
 
     public void RespawnMagnet(PlayerTurn owner)
     {
-        Transform holder = (owner == PlayerTurn.Player1) ?
-            GameManager.Instance.player1MagnetHolder :
-            GameManager.Instance.player2MagnetHolder;
+        int freeSlot = GetFreeSlot(owner);
+        Transform slot = playerSlots[owner][freeSlot];
 
-        if (holder != null)
-        {
-            // Count existing magnets
-            int existingMagnets = holder.childCount;
-            Vector3 spawnPosition = holder.position + new Vector3(existingMagnets * spacing, 0, 0);
+        GameObject obj = Instantiate(magnetPrefab, slot);
+        obj.transform.localPosition = Vector3.zero;
 
-            SpawnMagnet(spawnPosition, owner, holder);
-        }
+        Magnet m = obj.GetComponent<Magnet>();
+        m.SetOwner(owner);
+        m.SetSlotIndex(freeSlot);
     }
 }

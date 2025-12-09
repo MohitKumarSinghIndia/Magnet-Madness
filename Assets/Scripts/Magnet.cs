@@ -3,12 +3,9 @@ using System.Collections.Generic;
 
 public class Magnet : MonoBehaviour
 {
-    [Header("Magnet Properties")]
     public PlayerTurn owner;
-    public Color player1Color = Color.blue;
-    public Color player2Color = Color.red;
+    public int slotIndex = -1;
 
-    [Header("Drag Settings")]
     public float minDistanceToPickup = 1f;
 
     private bool isDragging = false;
@@ -16,124 +13,95 @@ public class Magnet : MonoBehaviour
     private bool hasBeenDropped = false;
 
     private Vector3 dragOffset;
-    private Vector3 originalPosition;
 
     private Camera mainCamera;
-    private SpriteRenderer spriteRenderer;
-    private CircleCollider2D magnetCollider;
+    private SpriteRenderer rendererRef;
+    private CircleCollider2D colliderRef;
 
     void Awake()
     {
         mainCamera = Camera.main;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        magnetCollider = GetComponent<CircleCollider2D>();
-
-        if (magnetCollider != null)
-            magnetCollider.isTrigger = true;
+        rendererRef = GetComponent<SpriteRenderer>();
+        colliderRef = GetComponent<CircleCollider2D>();
+        colliderRef.isTrigger = true;
     }
 
     void Start()
     {
-        UpdateMagnetColor();
-        originalPosition = transform.position; // Save original spawn point
+        rendererRef.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
     }
 
-    void UpdateMagnetColor()
+    public void SetOwner(PlayerTurn p)
     {
-        spriteRenderer.color = (owner == PlayerTurn.Player1) ? player1Color : player2Color;
+        owner = p;
+        rendererRef.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
     }
 
-    // ---------------------- UPDATE (PC + Mobile) ----------------------
+    public void SetSlotIndex(int index)
+    {
+        slotIndex = index;
+    }
+
     void Update()
     {
         if (GameManager.Instance.IsGameOver() || hasBeenDropped) return;
-        if (owner != GameManager.Instance.GetCurrentTurn()) return;
-        if (GameManager.Instance.GetPlayerMagnetCount(owner) <= 0) return;
+        if (owner != GameManager.Instance.currentTurn) return;
 
-        HandleMouseInput();   // PC
-        HandleTouchInput();   // Mobile
+        HandleMouse();
+        HandleTouch();
     }
 
-    // ===================== PC MOUSE INPUT ======================
-    void HandleMouseInput()
+    void HandleMouse()
     {
-        if (Input.touchCount > 0) return; // Avoid double detection
+        if (Input.touchCount > 0) return;
 
-        Vector3 mousePos = GetPointerWorldPosition(Input.mousePosition);
+        Vector3 pos = ScreenToWorld(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (Vector3.Distance(transform.position, mousePos) <= minDistanceToPickup)
-                StartDragging(mousePos);
-        }
+        if (Input.GetMouseButtonDown(0) &&
+            Vector3.Distance(transform.position, pos) <= minDistanceToPickup)
+            BeginDrag(pos);
 
         if (Input.GetMouseButton(0) && isDragging)
-        {
-            transform.position = mousePos + dragOffset;
-        }
+            transform.position = pos + dragOffset;
 
         if (Input.GetMouseButtonUp(0) && isDragging)
-        {
-            StopDragging();
-        }
+            EndDrag();
     }
 
-    // ===================== MOBILE TOUCH INPUT ======================
-    void HandleTouchInput()
+    void HandleTouch()
     {
         if (Input.touchCount == 0) return;
 
-        Touch touch = Input.GetTouch(0);
-        Vector3 touchPos = GetPointerWorldPosition(touch.position);
+        Touch t = Input.GetTouch(0);
+        Vector3 pos = ScreenToWorld(t.position);
 
-        switch (touch.phase)
-        {
-            case TouchPhase.Began:
-                if (Vector3.Distance(transform.position, touchPos) <= minDistanceToPickup)
-                    StartDragging(touchPos);
-                break;
+        if (t.phase == TouchPhase.Began &&
+            Vector3.Distance(transform.position, pos) <= minDistanceToPickup)
+            BeginDrag(pos);
 
-            case TouchPhase.Moved:
-                if (isDragging)
-                    transform.position = touchPos + dragOffset;
-                break;
+        if (t.phase == TouchPhase.Moved && isDragging)
+            transform.position = pos + dragOffset;
 
-            case TouchPhase.Ended:
-            case TouchPhase.Canceled:
-                if (isDragging)
-                    StopDragging();
-                break;
-        }
+        if ((t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled) && isDragging)
+            EndDrag();
     }
 
-    // ======================= DRAG LOGIC ==========================
-    void StartDragging(Vector3 pointerPos)
+    void BeginDrag(Vector3 pointer)
     {
+        dragOffset = transform.position - pointer;
         isDragging = true;
-        dragOffset = transform.position - pointerPos;
-        spriteRenderer.sortingOrder = 10; // Bring to front
+        rendererRef.sortingOrder = 10;
     }
 
-    void StopDragging()
+    void EndDrag()
     {
         isDragging = false;
-        spriteRenderer.sortingOrder = 1;
-        DropMagnet();
-    }
-
-    // ======================= DROP LOGIC ==========================
-    void DropMagnet()
-    {
-        if (GameManager.Instance.circleAreaCollider == null) return;
+        rendererRef.sortingOrder = 1;
 
         if (GameManager.Instance.circleAreaCollider.OverlapPoint(transform.position))
-        {
             PlaceInCircle();
-        }
         else
-        {
-            ReturnToHolder();
-        }
+            ReturnToSlot();
     }
 
     void PlaceInCircle()
@@ -144,46 +112,64 @@ public class Magnet : MonoBehaviour
         GameManager.Instance.RegisterMagnetInCircle(this);
         GameManager.Instance.RemoveMagnetFromPlayer(owner);
 
-        CheckCollisionsWithOtherMagnets();
+        CheckHits();
         GameManager.Instance.SwitchTurn();
     }
 
-    // =================== COLLISION COLLECTION ====================
-    void CheckCollisionsWithOtherMagnets()
+    void CheckHits()
     {
-        List<Magnet> magnetsInCircle = GameManager.Instance.GetMagnetsInCircle();
-        List<Magnet> collectedMagnets = new List<Magnet>();
+        List<Magnet> copy = new List<Magnet>(GameManager.Instance.GetMagnetsInCircle());
 
-        foreach (Magnet otherMagnet in magnetsInCircle)
+        foreach (Magnet other in copy)
         {
-            if (otherMagnet == this) continue;
-            if (otherMagnet.owner == this.owner) continue;
+            if (other == null || other == this) continue;
 
-            if (magnetCollider.IsTouching(otherMagnet.GetComponent<Collider2D>()))
+            if (colliderRef.IsTouching(other.GetComponent<Collider2D>()))
             {
-                collectedMagnets.Add(otherMagnet);
+                // ------------------------------
+                // 1. REMOVE touched magnet from circle
+                // ------------------------------
+                GameManager.Instance.UnregisterMagnetFromCircle(other);
+
+                // 2. Touched magnet returns to holder give magnet back
+                GameManager.Instance.AddMagnetToPlayer(this.owner);
+
+                // 3. Respawn touched magnet
+                GameManager.Instance.magnetSpawner.RespawnMagnet(this.owner);
+
+                Destroy(other.gameObject);
+
+                // ------------------------------
+                // 4. REMOVE this magnet from circle
+                // ------------------------------
+                GameManager.Instance.UnregisterMagnetFromCircle(this);
+
+                // 5. This magnet returns give magnet back
+                GameManager.Instance.AddMagnetToPlayer(this.owner);
+
+                // 6. Actually move this magnet back to slot
+                ReturnToSlot();
+
+                hasBeenDropped = false;
+                isInCircle = false;
+
+                // ------------------------------
+                // 7. Update UI now
+                // ------------------------------
+                UIManager.Instance.UpdateUI();
+
+                return;
             }
         }
-
-        foreach (Magnet collected in collectedMagnets)
-        {
-            GameManager.Instance.UnregisterMagnetFromCircle(collected);
-            GameManager.Instance.AddMagnetToPlayer(owner);
-
-            GameManager.Instance.magnetSpawner.RespawnMagnet(owner);
-
-            Destroy(collected.gameObject);
-        }
     }
 
-    // ---------------- RETURN TO ORIGINAL POSITION ----------------
-    void ReturnToHolder()
+    void ReturnToSlot()
     {
-        transform.position = originalPosition; // return to starting slot
+        Transform slot = GameManager.Instance.magnetSpawner.playerSlots[owner][slotIndex];
+        transform.position = slot.position;
     }
 
-    // ---------------- UTILITY ----------------
-    Vector3 GetPointerWorldPosition(Vector2 screenPos)
+    Vector3 ScreenToWorld(Vector2 screenPos)
     {
         Vector3 pos = screenPos;
         pos.z = -mainCamera.transform.position.z;
@@ -194,11 +180,5 @@ public class Magnet : MonoBehaviour
     {
         if (isInCircle)
             GameManager.Instance.UnregisterMagnetFromCircle(this);
-    }
-
-    public void SetOwner(PlayerTurn newOwner)
-    {
-        owner = newOwner;
-        UpdateMagnetColor();
     }
 }
