@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum PlayerTurn { Player1, Player2 }
@@ -21,11 +20,11 @@ public class GameManager : MonoBehaviour
     [Header("Spawner")]
     public MagnetSpawner magnetSpawner;
 
-    public int player1Magnets;      // INVENTORY
-    public int player2Magnets;      // INVENTORY
+    public int player1Magnets;
+    public int player2Magnets;
 
-    public int player1Placed = 0;   // MAGNETS IN CIRCLE
-    public int player2Placed = 0;   // MAGNETS IN CIRCLE
+    public int player1Placed = 0;
+    public int player2Placed = 0;
 
     public PlayerTurn currentTurn = PlayerTurn.Player1;
 
@@ -41,7 +40,6 @@ public class GameManager : MonoBehaviour
         InitializeGame();
     }
 
-    // ------------------ GAME INIT ------------------
     public void InitializeGame()
     {
         player1Magnets = initialMagnetCount;
@@ -57,15 +55,12 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.InitializeUI();
     }
 
-    // ------------------ TURN LOGIC ------------------
     public void SwitchTurn()
     {
-        currentTurn = currentTurn == PlayerTurn.Player1 ? PlayerTurn.Player2 : PlayerTurn.Player1;
-
+        currentTurn = (currentTurn == PlayerTurn.Player1) ? PlayerTurn.Player2 : PlayerTurn.Player1;
         UIManager.Instance.UpdateUI();
     }
 
-    // ------------------ PLAYER INVENTORY ------------------
     public void AddMagnetToPlayer(PlayerTurn p)
     {
         if (p == PlayerTurn.Player1) player1Magnets++;
@@ -82,7 +77,6 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.UpdateUI();
     }
 
-    // ------------------ PLACED COUNTERS ------------------
     public void AddPlaced(PlayerTurn p)
     {
         if (p == PlayerTurn.Player1) player1Placed++;
@@ -95,7 +89,6 @@ public class GameManager : MonoBehaviour
         else player2Placed--;
     }
 
-    // ------------------ WIN CHECK ------------------
     public void CheckWinCondition()
     {
         if (player1Placed == initialMagnetCount)
@@ -103,11 +96,8 @@ public class GameManager : MonoBehaviour
 
         if (player2Placed == initialMagnetCount)
             UIManager.Instance.ShowWin(PlayerTurn.Player2);
-
-        Debug.Log("CheckWinCondition");
     }
 
-    // ------------------ CIRCLE LOGIC ------------------
     public void RegisterMagnetInCircle(Magnet m)
     {
         if (!magnetsInCircle.Contains(m))
@@ -139,10 +129,8 @@ public class GameManager : MonoBehaviour
     public void OnRestartButtonClicked()
     {
         foreach (Magnet m in new List<Magnet>(magnetsInCircle))
-        {
-            if (m != null)
-                Destroy(m.gameObject);
-        }
+            if (m != null) Destroy(m.gameObject);
+
         magnetsInCircle.Clear();
 
         ClearHolder(player1MagnetHolder);

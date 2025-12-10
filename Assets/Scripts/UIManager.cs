@@ -29,31 +29,21 @@ public class UIManager : MonoBehaviour
         restartButton.onClick.RemoveListener(gameManager.OnRestartButtonClicked);
     }
 
-    // -------------------------------------------------------
-    // INITIALIZE UI (call this once on game start or restart)
-    // -------------------------------------------------------
     public void InitializeUI()
     {
         winPanel.SetActive(false);
         restartButton.gameObject.SetActive(false);
         winMessageText.text = "";
-
-        UpdateUI(); // Refresh magnet counts + turn UI
+        UpdateUI();
     }
 
-    // -------------------------------------------------------
-    // UPDATE IN-GAME UI (counts, turn text)
-    // -------------------------------------------------------
     public void UpdateUI()
     {
         player1CountText.text = "P1 Magnets: " + GameManager.Instance.player1Magnets;
         player2CountText.text = "P2 Magnets: " + GameManager.Instance.player2Magnets;
-        currentTurnText.text = "Turn: " + GameManager.Instance.currentTurn;
+        currentTurnText.text = "Turn: " + GameManager.Instance.currentTurn.ToString();
     }
 
-    // -------------------------------------------------------
-    // SHOW WIN PANEL
-    // -------------------------------------------------------
     public void ShowWin(PlayerTurn winner)
     {
         winMessageText.text = winner + " Wins!";
