@@ -21,6 +21,7 @@ public class Magnet : MonoBehaviour
     private SpriteRenderer rendererRef;
     private CircleCollider2D colliderRef;
 
+
     void Awake()
     {
         mainCamera = Camera.main;
@@ -150,10 +151,16 @@ public class Magnet : MonoBehaviour
                 isInCircle = false;
 
                 UIManager.Instance.UpdateUI();
-                //return;
             }
         }
     }
+
+    void MagnetShake()
+    {
+
+    }
+
+
 
     void ReturnToSlot()
     {
