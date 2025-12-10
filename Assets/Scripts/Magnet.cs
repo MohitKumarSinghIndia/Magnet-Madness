@@ -150,40 +150,68 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         GameManager.Instance.RemoveMagnetFromPlayer(owner);
         GameManager.Instance.AddPlaced(owner);
 
-        CheckHits();
+        // MULTIPLE COLLISION CHECK
+        List<Magnet> hits = GetAllHits();
 
+        if (hits.Count > 0)
+        {
+            HandleMultipleHits(hits);
+            return;
+        }
+
+        // Normal flow
         GameManager.Instance.CheckWinCondition();
         GameManager.Instance.SwitchTurn();
+        UIManager.Instance.UpdateUI();
     }
 
-    void CheckHits()
+    // Returns ALL magnets touching this magnet
+    List<Magnet> GetAllHits()
     {
-        List<Magnet> copy = new List<Magnet>(GameManager.Instance.GetMagnetsInCircle());
+        List<Magnet> collided = new List<Magnet>();
 
-        foreach (Magnet other in copy)
+        foreach (Magnet other in GameManager.Instance.GetMagnetsInCircle())
         {
+            if (other == this) continue;
+
             if (colliderRef != null && colliderRef.IsTouching(other.GetComponent<Collider2D>()))
             {
-                this.MagnetShake();
-                other.MagnetShake();
-
-                DOVirtual.DelayedCall(0.5f, () =>
-                {
-                    ProcessCollision(other);
-                });
+                collided.Add(other);
             }
         }
+
+        return collided;
     }
 
-    #endregion
-    void ProcessCollision(Magnet hitMagnet)
+    void HandleMultipleHits(List<Magnet> hitMagnets)
     {
-        GameManager.Instance.UnregisterMagnetFromCircle(hitMagnet);
-        GameManager.Instance.AddMagnetToPlayer(owner);
-        GameManager.Instance.RemovePlaced(owner);
-        GameManager.Instance.magnetSpawner.RespawnMagnet(owner);
-        Destroy(hitMagnet.gameObject);
+        // Shake this magnet
+        MagnetShake();
 
+        // Shake all hit magnets
+        foreach (var m in hitMagnets)
+            m.MagnetShake();
+
+        // Process after a delay
+        DOVirtual.DelayedCall(0.5f, () =>
+        {
+            ProcessMultipleCollisions(hitMagnets);
+        });
+    }
+
+    void ProcessMultipleCollisions(List<Magnet> magnetList)
+    {
+        foreach (Magnet hitMagnet in magnetList)
+        {
+            GameManager.Instance.UnregisterMagnetFromCircle(hitMagnet);
+            GameManager.Instance.AddMagnetToPlayer(owner);
+            GameManager.Instance.RemovePlaced(owner);
+            GameManager.Instance.magnetSpawner.RespawnMagnet(owner);
+
+            Destroy(hitMagnet.gameObject);
+        }
+
+        // Remove THIS magnet also
         GameManager.Instance.UnregisterMagnetFromCircle(this);
         GameManager.Instance.AddMagnetToPlayer(owner);
         GameManager.Instance.RemovePlaced(owner);
@@ -195,6 +223,9 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         UIManager.Instance.UpdateUI();
     }
+
+    #endregion
+
     #region ====== Visual Effects ======
 
     void HighlightOnTouch()
