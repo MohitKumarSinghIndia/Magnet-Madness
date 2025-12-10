@@ -150,7 +150,7 @@ public class Magnet : MonoBehaviour
                 isInCircle = false;
 
                 UIManager.Instance.UpdateUI();
-                return;
+                //return;
             }
         }
     }
