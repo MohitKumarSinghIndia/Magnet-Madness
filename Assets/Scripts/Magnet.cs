@@ -35,6 +35,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     private Tween activeTween;
     private Vector3 smoothDragTarget;
+    public Vector3 dragOffset = new(0, .25f, 0);
     public float dragSmoothSpeed = 15f;
 
     public float highlightScaleUp = 1.15f;
@@ -67,7 +68,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         {
             rectTransform.position = Vector3.Lerp(
                 rectTransform.position,
-                smoothDragTarget,
+                smoothDragTarget + dragOffset,
                 Time.deltaTime * dragSmoothSpeed
             );
         }
