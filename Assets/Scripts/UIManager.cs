@@ -9,6 +9,10 @@ public class UIManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI player1CountText;
     [SerializeField] private TextMeshProUGUI player2CountText;
+
+    [SerializeField] private TextMeshProUGUI player1NameText;
+    [SerializeField] private TextMeshProUGUI player2NameText;
+
     [SerializeField] private TextMeshProUGUI winMessageText;
 
     [SerializeField] private GameObject player1TurnImage;
@@ -51,13 +55,17 @@ public class UIManager : MonoBehaviour
         restartButton.gameObject.SetActive(false);
         isGameOver = false;
         winMessageText.text = "";
+
+        player1NameText.text = GameData.Player1Name;
+        player2NameText.text = GameData.Player2Name;
+
         UpdateUI();
     }
 
     public void UpdateUI()
     {
-        player1CountText.text = $"P1 Magnets: {GameManager.Instance.player1Magnets}";
-        player2CountText.text = $"P2 Magnets: {GameManager.Instance.player2Magnets}";
+        player1CountText.text = $"{GameManager.Instance.player1Magnets}";
+        player2CountText.text = $"{GameManager.Instance.player2Magnets}";
 
         UpdateTurnIndicator(GameManager.Instance.currentTurn);
     }

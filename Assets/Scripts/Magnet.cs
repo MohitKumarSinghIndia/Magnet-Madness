@@ -189,6 +189,9 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         // Shake this magnet
         MagnetShake();
 
+        // Vibrate on collision
+        HapticManager.VibrateMedium();
+
         // Shake all hit magnets
         foreach (var m in hitMagnets)
             m.MagnetShake();
