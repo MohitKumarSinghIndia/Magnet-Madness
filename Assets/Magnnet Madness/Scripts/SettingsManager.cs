@@ -16,18 +16,21 @@ public class SettingsManager : MonoBehaviour
     {
         GameData.MusicEnabled = musicToggle.isOn;
         PlayerPrefs.SetInt("music", musicToggle.isOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void OnSfxChanged()
     {
         GameData.SfxEnabled = sfxToggle.isOn;
         PlayerPrefs.SetInt("sfx", sfxToggle.isOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public void OnVibrationChanged()
     {
         GameData.VibrationEnabled = vibrationToggle.isOn;
         PlayerPrefs.SetInt("vibration", vibrationToggle.isOn ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     void LoadSettings()
