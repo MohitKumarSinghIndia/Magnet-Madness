@@ -7,7 +7,7 @@ public class SkinItemButton : MonoBehaviour
     public Image iconImage;
     public GameObject selectionHighlight;
 
-    private SkinSelection controller;
+    private SkinSelectionPanel controller;
     private Button button;
 
     private void Awake()
@@ -24,7 +24,7 @@ public class SkinItemButton : MonoBehaviour
         button.onClick.RemoveListener(OnClick);
     }
 
-    public void Init(int index, Sprite icon, SkinSelection ui)
+    public void Init(int index, Sprite icon, SkinSelectionPanel ui)
     {
         skinIndex = index;
         controller = ui;

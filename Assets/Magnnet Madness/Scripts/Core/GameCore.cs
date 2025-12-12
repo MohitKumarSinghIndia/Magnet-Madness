@@ -9,14 +9,15 @@ public class GameCore : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //if (Instance != null)
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
+
+        //Instance = this;
+        //DontDestroyOnLoad(gameObject);
 
         // Load saved preferences
         gameData.LoadFromPrefs();

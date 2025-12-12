@@ -31,17 +31,22 @@ public class MagnetSpawner : MonoBehaviour
         var slots = playerSlots[owner];
         int skin = GameCore.Instance.gameData.selectedMagnetSkin;
 
+        GameObject obj;
+        Image img;
+        Magnet magnet;
+
         for (int i = 0; i < count; i++)
         {
-            GameObject obj = Instantiate(magnetPrefab, slots[i]);
+            obj = Instantiate(magnetPrefab, slots[i]);
             obj.transform.localPosition = Vector3.zero;
 
-            obj.GetComponent<Image>().sprite =
-                GameCore.Instance.skinLibrary.GetSkin(skin);
+            img = obj.GetComponent<Image>();
+            img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+            img.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
 
-            Magnet m = obj.GetComponent<Magnet>();
-            m.SetOwner(owner);
-            m.SetSlotIndex(i);
+            magnet = obj.GetComponent<Magnet>();
+            magnet.owner = owner;
+            magnet.SetSlotIndex(i);
         }
     }
 
@@ -50,12 +55,14 @@ public class MagnetSpawner : MonoBehaviour
         var slots = playerSlots[owner];
         bool[] used = new bool[slots.Count];
 
+        Magnet magnet;
+
         foreach (Transform slot in slots)
         {
             if (slot.childCount > 0)
             {
-                Magnet m = slot.GetChild(0).GetComponent<Magnet>();
-                if (m != null) used[m.slotIndex] = true;
+                magnet = slot.GetChild(0).GetComponent<Magnet>();
+                if (magnet != null) used[magnet.slotIndex] = true;
             }
         }
 
@@ -68,13 +75,19 @@ public class MagnetSpawner : MonoBehaviour
     public void RespawnMagnet(PlayerTurn owner)
     {
         int freeSlot = GetFreeSlot(owner);
+        int skin = GameCore.Instance.gameData.selectedMagnetSkin;
+
         Transform slot = playerSlots[owner][freeSlot];
 
         GameObject obj = Instantiate(magnetPrefab, slot);
         obj.transform.localPosition = Vector3.zero;
 
-        Magnet m = obj.GetComponent<Magnet>();
-        m.SetOwner(owner);
-        m.SetSlotIndex(freeSlot);
+        Image img = obj.GetComponent<Image>();
+        img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+        img.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
+
+        Magnet magnet = obj.GetComponent<Magnet>();
+        magnet.owner = owner;
+        magnet.SetSlotIndex(freeSlot);
     }
 }

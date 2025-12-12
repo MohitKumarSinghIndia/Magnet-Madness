@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkinSelection : MonoBehaviour
+public class SkinSelectionPanel : MonoBehaviour
 {
     public Transform gridParent;
     public GameObject skinPrefab;
@@ -60,8 +60,6 @@ public class SkinSelection : MonoBehaviour
     {
         GameCore.Instance.gameData.selectedMagnetSkin = selectedSkinIndex;
         GameCore.Instance.gameData.Save();
-
-        gameObject.SetActive(false);
-        MainMenuManager.Instance.OnBackToMainMenu();
+        UIManager.Instance.OnBackToMainMenu();
     }
 }

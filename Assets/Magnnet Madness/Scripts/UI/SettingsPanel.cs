@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsManager : MonoBehaviour
+public class SettingsPanel : MonoBehaviour
 {
     public Toggle musicToggle;
     public Toggle sfxToggle;

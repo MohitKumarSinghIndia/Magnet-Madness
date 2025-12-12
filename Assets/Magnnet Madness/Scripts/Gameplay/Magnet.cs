@@ -16,8 +16,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public float minDistanceToPickup = 1f;
 
     [Header("Colors")]
-    public Color player1Color = Color.blue;
-    public Color player2Color = Color.red;
+    public Color player1Color;
+    public Color player2Color;
 
     #endregion
 
@@ -28,7 +28,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private bool hasBeenDropped = false;
 
     private Camera mainCamera;
-    private Image rendererImage;
     private CircleCollider2D colliderRef;
     private RectTransform rectTransform;
     private Canvas parentCanvas;
@@ -44,22 +43,15 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     #endregion
 
     #region ====== Unity Lifecycle ======
-
-    void Awake()
+    private void OnEnable()
     {
         mainCamera = Camera.main;
-        rendererImage = GetComponent<Image>();
         colliderRef = GetComponent<CircleCollider2D>();
         rectTransform = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
 
         if (colliderRef != null)
             colliderRef.isTrigger = true;
-    }
-
-    void Start()
-    {
-        rendererImage.color = (owner == PlayerTurn.Player1) ? player1Color : player2Color;
     }
 
     void Update()
@@ -77,13 +69,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     #endregion
 
     #region ====== Public Setup ======
-
-    public void SetOwner(PlayerTurn p)
-    {
-        owner = p;
-        rendererImage.color = (owner == PlayerTurn.Player1) ? player1Color : player2Color;
-    }
-
     public void SetSlotIndex(int index)
     {
         slotIndex = index;
@@ -163,7 +148,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         // Normal flow
         GameManager.Instance.CheckWinCondition();
         GameManager.Instance.SwitchTurn();
-        GameplayUIManager.Instance.UpdateUI();
+        UIManager.Instance.UpdateGameplayUI();
     }
 
     // Returns ALL magnets touching this magnet
@@ -173,8 +158,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         foreach (Magnet other in GameManager.Instance.GetMagnetsInCircle())
         {
-            if (other == this) continue;
-
             if (colliderRef != null && colliderRef.IsTouching(other.GetComponent<Collider2D>()))
             {
                 collided.Add(other);
@@ -225,7 +208,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         hasBeenDropped = false;
         isInCircle = false;
 
-        GameplayUIManager.Instance.UpdateUI();
+        UIManager.Instance.UpdateGameplayUI();
     }
 
     #endregion
