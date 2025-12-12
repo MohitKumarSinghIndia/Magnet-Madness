@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class MagnetSpawner : MonoBehaviour
 {
@@ -28,11 +29,15 @@ public class MagnetSpawner : MonoBehaviour
     void SpawnFor(PlayerTurn owner, int count)
     {
         var slots = playerSlots[owner];
+        int skin = GameCore.Instance.gameData.selectedMagnetSkin;
 
         for (int i = 0; i < count; i++)
         {
             GameObject obj = Instantiate(magnetPrefab, slots[i]);
             obj.transform.localPosition = Vector3.zero;
+
+            obj.GetComponent<Image>().sprite =
+                GameCore.Instance.skinLibrary.GetSkin(skin);
 
             Magnet m = obj.GetComponent<Magnet>();
             m.SetOwner(owner);

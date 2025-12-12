@@ -4,7 +4,7 @@ public static class HapticManager
 {
     public static void VibrateLight()
     {
-        if (!GameData.VibrationEnabled) return;
+        if (!GameCore.Instance.gameData.vibrationEnabled) return;
 
 #if UNITY_ANDROID
         Handheld.Vibrate();
@@ -13,7 +13,7 @@ public static class HapticManager
 
     public static void VibrateMedium()
     {
-        if (!GameData.VibrationEnabled) return;
+        if (!GameCore.Instance.gameData.vibrationEnabled) return;
 
 #if UNITY_ANDROID
         Handheld.Vibrate();

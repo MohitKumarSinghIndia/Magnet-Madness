@@ -52,13 +52,13 @@ public class GameManager : MonoBehaviour
 
         magnetSpawner.SpawnPlayerMagnets();
 
-        UIManager.Instance.InitializeUI();
+        GameplayUIManager.Instance.InitializeUI();
     }
 
     public void SwitchTurn()
     {
         currentTurn = (currentTurn == PlayerTurn.Player1) ? PlayerTurn.Player2 : PlayerTurn.Player1;
-        UIManager.Instance.UpdateUI();
+        GameplayUIManager.Instance.UpdateUI();
     }
 
     public void AddMagnetToPlayer(PlayerTurn p)
@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
         if (p == PlayerTurn.Player1) player1Magnets++;
         else player2Magnets++;
 
-        UIManager.Instance.UpdateUI();
+        GameplayUIManager.Instance.UpdateUI();
     }
 
     public void RemoveMagnetFromPlayer(PlayerTurn p)
@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         if (p == PlayerTurn.Player1) player1Magnets--;
         else player2Magnets--;
 
-        UIManager.Instance.UpdateUI();
+        GameplayUIManager.Instance.UpdateUI();
     }
 
     public void AddPlaced(PlayerTurn p)
@@ -92,10 +92,10 @@ public class GameManager : MonoBehaviour
     public void CheckWinCondition()
     {
         if (player1Placed == initialMagnetCount)
-            UIManager.Instance.ShowWin(PlayerTurn.Player1);
+            GameplayUIManager.Instance.ShowWin(PlayerTurn.Player1);
 
         if (player2Placed == initialMagnetCount)
-            UIManager.Instance.ShowWin(PlayerTurn.Player2);
+            GameplayUIManager.Instance.ShowWin(PlayerTurn.Player2);
     }
 
     public void RegisterMagnetInCircle(Magnet m)
@@ -146,6 +146,6 @@ public class GameManager : MonoBehaviour
 
         magnetSpawner.SpawnPlayerMagnets();
 
-        UIManager.Instance.InitializeUI();
+        GameplayUIManager.Instance.InitializeUI();
     }
 }

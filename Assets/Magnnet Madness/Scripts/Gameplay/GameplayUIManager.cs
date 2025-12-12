@@ -2,9 +2,9 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class GameplayUIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static GameplayUIManager Instance;
 
     [Header("UI References")]
     [SerializeField] private TextMeshProUGUI player1CountText;
@@ -56,8 +56,8 @@ public class UIManager : MonoBehaviour
         isGameOver = false;
         winMessageText.text = "";
 
-        player1NameText.text = GameData.Player1Name;
-        player2NameText.text = GameData.Player2Name;
+        player1NameText.text = GameCore.Instance.gameData.player1Name;
+        player2NameText.text = GameCore.Instance.gameData.player2Name;
 
         UpdateUI();
     }

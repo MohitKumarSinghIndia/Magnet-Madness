@@ -163,7 +163,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         // Normal flow
         GameManager.Instance.CheckWinCondition();
         GameManager.Instance.SwitchTurn();
-        UIManager.Instance.UpdateUI();
+        GameplayUIManager.Instance.UpdateUI();
     }
 
     // Returns ALL magnets touching this magnet
@@ -225,7 +225,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         hasBeenDropped = false;
         isInCircle = false;
 
-        UIManager.Instance.UpdateUI();
+        GameplayUIManager.Instance.UpdateUI();
     }
 
     #endregion
