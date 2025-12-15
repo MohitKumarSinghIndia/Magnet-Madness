@@ -49,7 +49,11 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        restartButton.onClick.AddListener(() => GameManager.Instance.OnRestartButtonClicked());
+        restartButton.onClick.AddListener(() =>
+        {
+            GameManager.Instance.OnRestartButtonClicked();
+        });
+    
         homeButton.onClick.AddListener(() =>
         {
             GameManager.Instance.ReturnToMainMenu();
@@ -145,7 +149,6 @@ public class UIManager : MonoBehaviour
     {
         isGameOver = false;
         GameOverPanel.gameObject.SetActive(false);
-        restartButton.gameObject.SetActive(false);
         winMessageText.text = "";
 
         player1NameText.text = GameCore.Instance.gameData.player1Name;
@@ -180,12 +183,11 @@ public class UIManager : MonoBehaviour
         isGameOver = true;
 
         GameOverPanel.gameObject.SetActive(true);
-        restartButton.gameObject.SetActive(true);
+        GameOverPanel.SetAsLastSibling();
 
         winMessageText.text = $"{winnerName} Wins!";
 
         player1TurnImage.SetActive(false);
         player2TurnImage.SetActive(false);
     }
-
 }
