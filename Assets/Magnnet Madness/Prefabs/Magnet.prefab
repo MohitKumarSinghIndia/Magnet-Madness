@@ -156,8 +156,8 @@ MonoBehaviour:
   owner: 0
   slotIndex: -1
   minDistanceToPickup: 1
-  player1Color: {r: 1, g: 0, b: 0, a: 1}
-  player2Color: {r: 1, g: 1, b: 1, a: 1}
+  player1Color: {r: 0.54901963, g: 0.54901963, b: 1, a: 1}
+  player2Color: {r: 1, g: 0.29411766, b: 0.19607843, a: 1}
   dragOffset: {x: 0, y: 100, z: 0}
   dragSmoothSpeed: 15
   highlightScaleUp: 1.15
