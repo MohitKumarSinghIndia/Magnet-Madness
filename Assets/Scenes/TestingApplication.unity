@@ -2998,7 +2998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3844cc4c814b7c1438047cf0f7736a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  initialMagnetCount: 5
+  initialMagnetCount: 3
   player1MagnetHolder: {fileID: 1701507413}
   player2MagnetHolder: {fileID: 1225790807}
   circleAreaCollider: {fileID: 20126816}
@@ -5668,18 +5668,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 785784921}
-        m_TargetAssemblyTypeName: GoogleAdsManager, Assembly-CSharp
-        m_MethodName: ShowInterstitial
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!222 &2180510330553342159
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6948,18 +6936,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 785784921}
-        m_TargetAssemblyTypeName: GoogleAdsManager, Assembly-CSharp
-        m_MethodName: ShowRewardedAd
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &3926782303273132807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7681,18 +7657,6 @@ MonoBehaviour:
       - m_Target: {fileID: 1536433943}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OnSettingsClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 785784921}
-        m_TargetAssemblyTypeName: GoogleAdsManager, Assembly-CSharp
-        m_MethodName: ShowInterstitial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

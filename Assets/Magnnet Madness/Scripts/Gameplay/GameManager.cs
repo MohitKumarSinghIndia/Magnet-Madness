@@ -1,15 +1,32 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-public enum PlayerTurn { Player1, Player2 }
+public enum PlayerTurn
+{
+    Player1,
+    Player2
+}
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    #region Gameplay Settings
+
     [Header("Gameplay Settings")]
     public int initialMagnetCount = 5;
+
+    #endregion
+
+    #region Ad Settings
+
+    [Header("Ad Settings")]
+    private int gameOverCount = 0;
+
+    #endregion
+
+    #region References
 
     [Header("Player Magnet Holders")]
     public Transform player1MagnetHolder;
@@ -21,27 +38,47 @@ public class GameManager : MonoBehaviour
     [Header("Spawner")]
     public MagnetSpawner magnetSpawner;
 
+    #endregion
+
+    #region Game State
+
     public int player1Magnets;
     public int player2Magnets;
 
-    public int player1Placed = 0;
-    public int player2Placed = 0;
+    public int player1Placed;
+    public int player2Placed;
 
     public PlayerTurn currentTurn = PlayerTurn.Player1;
 
     private List<Magnet> magnetsInCircle = new List<Magnet>();
 
+    private bool isGameOver = false;
+
+    #endregion
+
+    #region Unity
+
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(gameObject);
     }
 
-    // -------------------------------------------------------------------
-    // INITIALIZATION
-    // -------------------------------------------------------------------
+    private void Start()
+    {
+        gameOverCount = 0;
+    }
+
+    #endregion
+
+    #region Initialization
 
     public void InitializeGame()
     {
+        isGameOver = false;
+
         player1Magnets = initialMagnetCount;
         player2Magnets = initialMagnetCount;
 
@@ -49,7 +86,6 @@ public class GameManager : MonoBehaviour
         player2Placed = 0;
 
         magnetsInCircle.Clear();
-
         currentTurn = PlayerTurn.Player1;
 
         ClearHolder(player1MagnetHolder);
@@ -58,120 +94,179 @@ public class GameManager : MonoBehaviour
         magnetSpawner.SpawnPlayerMagnets();
 
         UIManager.Instance.InitializeGameplayUI();
-
         UIManager.Instance.LoadGameplayPanel();
+        UIManager.Instance.UpdateGameplayUI();
 
-        GoogleAdsManager.Instance.ShowBanner();
+        if (GoogleAdsManager.Instance != null)
+            GoogleAdsManager.Instance.ShowBanner();
     }
 
-    // -------------------------------------------------------------------
-    // TURN SYSTEM
-    // -------------------------------------------------------------------
+    #endregion
+
+    #region Turn System
 
     public void SwitchTurn()
     {
-        if (IsGameOver()) return;
+        if (isGameOver)
+            return;
 
-        currentTurn = (currentTurn == PlayerTurn.Player1) ? PlayerTurn.Player2 : PlayerTurn.Player1;
-        UIManager.Instance.UpdateGameplayUI();
-    }
-
-    // -------------------------------------------------------------------
-    // MAGNET COUNTS
-    // -------------------------------------------------------------------
-
-    public void AddMagnetToPlayer(PlayerTurn p)
-    {
-        if (p == PlayerTurn.Player1) player1Magnets++;
-        else player2Magnets++;
+        currentTurn = currentTurn == PlayerTurn.Player1
+            ? PlayerTurn.Player2
+            : PlayerTurn.Player1;
 
         UIManager.Instance.UpdateGameplayUI();
     }
 
-    public void RemoveMagnetFromPlayer(PlayerTurn p)
+    #endregion
+
+    #region Magnet Counts
+
+    public void AddMagnetToPlayer(PlayerTurn player)
     {
-        if (p == PlayerTurn.Player1) player1Magnets--;
-        else player2Magnets--;
+        if (player == PlayerTurn.Player1)
+            player1Magnets++;
+        else
+            player2Magnets++;
 
         UIManager.Instance.UpdateGameplayUI();
     }
 
-    public void AddPlaced(PlayerTurn p)
+    public void RemoveMagnetFromPlayer(PlayerTurn player)
     {
-        if (p == PlayerTurn.Player1) player1Placed++;
-        else player2Placed++;
+        if (player == PlayerTurn.Player1)
+            player1Magnets = Mathf.Max(0, player1Magnets - 1);
+        else
+            player2Magnets = Mathf.Max(0, player2Magnets - 1);
+
+        UIManager.Instance.UpdateGameplayUI();
     }
 
-    public void RemovePlaced(PlayerTurn p)
+    public void AddPlaced(PlayerTurn player)
     {
-        if (p == PlayerTurn.Player1) player1Placed--;
-        else player2Placed--;
+        if (player == PlayerTurn.Player1)
+            player1Placed++;
+        else
+            player2Placed++;
     }
 
-    // -------------------------------------------------------------------
-    // WIN CHECK
-    // -------------------------------------------------------------------
+    public void RemovePlaced(PlayerTurn player)
+    {
+        if (player == PlayerTurn.Player1)
+            player1Placed = Mathf.Max(0, player1Placed - 1);
+        else
+            player2Placed = Mathf.Max(0, player2Placed - 1);
+    }
+
+    #endregion
+
+    #region Win Check
 
     public void CheckWinCondition()
     {
-        if (player1Placed == initialMagnetCount)
-            UIManager.Instance.ShowWin(GameCore.Instance.gameData.player1Name);
+        if (isGameOver)
+            return;
 
-        if (player2Placed == initialMagnetCount)
-            UIManager.Instance.ShowWin(GameCore.Instance.gameData.player1Name);
+        if (player1Placed >= initialMagnetCount)
+        {
+            HandleGameOver(GameCore.Instance.gameData.player1Name);
+        }
+        else if (player2Placed >= initialMagnetCount)
+        {
+            HandleGameOver(GameCore.Instance.gameData.player2Name);
+        }
     }
 
-    // -------------------------------------------------------------------
-    // CIRCLE REGISTER
-    // -------------------------------------------------------------------
-
-    public void RegisterMagnetInCircle(Magnet m)
+    private void HandleGameOver(string winnerName)
     {
-        if (!magnetsInCircle.Contains(m))
-            magnetsInCircle.Add(m);
+        if (isGameOver)
+            return;
+
+        isGameOver = true;
+
+        UIManager.Instance.ShowWin(winnerName);
+        TryShowInterstitialOnGameOver();
     }
 
-    public void UnregisterMagnetFromCircle(Magnet m)
+    public void TryShowInterstitialOnGameOver()
     {
-        if (magnetsInCircle.Contains(m))
-            magnetsInCircle.Remove(m);
-    }
+        if (GoogleAdsManager.Instance == null)
+            return;
 
-    public List<Magnet> GetMagnetsInCircle() => magnetsInCircle;
+        gameOverCount++;
+
+        if (gameOverCount >= GoogleAdsManager.Instance.adsDisplayInterval)
+        {
+            GoogleAdsManager.Instance.HideBanner();
+            GoogleAdsManager.Instance.ShowInterstitial();
+            gameOverCount = 0;
+        }
+    }
 
     public bool IsGameOver()
     {
-        return player1Placed == initialMagnetCount || player2Placed == initialMagnetCount;
+        return isGameOver;
     }
 
-    // -------------------------------------------------------------------
-    // RESTART GAME
-    // -------------------------------------------------------------------
+    #endregion
+
+    #region Circle Register
+
+    public void RegisterMagnetInCircle(Magnet magnet)
+    {
+        if (!magnetsInCircle.Contains(magnet))
+            magnetsInCircle.Add(magnet);
+    }
+
+    public void UnregisterMagnetFromCircle(Magnet magnet)
+    {
+        if (magnetsInCircle.Contains(magnet))
+            magnetsInCircle.Remove(magnet);
+    }
+
+    public List<Magnet> GetMagnetsInCircle()
+    {
+        return magnetsInCircle;
+    }
+
+    #endregion
+
+    #region Restart Game
 
     public void OnRestartButtonClicked()
     {
-        foreach (Magnet m in new List<Magnet>(magnetsInCircle))
-            if (m != null) Destroy(m.gameObject);
+        foreach (Magnet magnet in new List<Magnet>(magnetsInCircle))
+        {
+            if (magnet != null)
+                Destroy(magnet.gameObject);
+        }
 
         magnetsInCircle.Clear();
-
         InitializeGame();
     }
 
-    // -------------------------------------------------------------------
-    // RETURN TO MAIN MENU
-    // -------------------------------------------------------------------
+    #endregion
+
+    #region Main Menu
 
     public void ReturnToMainMenu()
     {
-        foreach (Magnet m in new List<Magnet>(magnetsInCircle))
-            if (m != null) Destroy(m.gameObject);
+        gameOverCount = 0;
+
+        foreach (Magnet magnet in new List<Magnet>(magnetsInCircle))
+        {
+            if (magnet != null)
+                Destroy(magnet.gameObject);
+        }
 
         magnetsInCircle.Clear();
 
         ClearHolder(player1MagnetHolder);
         ClearHolder(player2MagnetHolder);
     }
+
+    #endregion
+
+    #region Utility
 
     private void ClearHolder(Transform holder)
     {
@@ -181,4 +276,6 @@ public class GameManager : MonoBehaviour
                 Destroy(slot.GetChild(0).gameObject);
         }
     }
+
+    #endregion
 }
