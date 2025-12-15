@@ -41,7 +41,7 @@ public class MagnetSpawner : MonoBehaviour
             obj.transform.localPosition = Vector3.zero;
 
             magnet = obj.GetComponent<Magnet>();
-            img = obj.GetComponent<Image>();
+            img = magnet.magnetImg;
 
             img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
             img.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
@@ -84,7 +84,7 @@ public class MagnetSpawner : MonoBehaviour
         obj.transform.localPosition = Vector3.zero;
 
         Magnet magnet = obj.GetComponent<Magnet>();
-        Image img = obj.GetComponent<Image>();
+        Image img = magnet.magnetImg;
 
         img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
         img.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;

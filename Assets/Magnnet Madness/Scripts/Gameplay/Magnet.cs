@@ -16,6 +16,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public float minDistanceToPickup = 1f;
 
     [Header("Colors")]
+    public Image magnetImg;
+    public GameObject effect;
     public Color player1Color;
     public Color player2Color;
 
@@ -50,6 +52,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         rectTransform = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
 
+        effect.SetActive(false);
+
         if (colliderRef != null)
             colliderRef.isTrigger = true;
     }
@@ -64,7 +68,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 Time.deltaTime * dragSmoothSpeed
             );
 
-            Debug.Log($"----------- smoothDragTarget: {smoothDragTarget}   dragOffset: {dragOffset}   finalPos: {smoothDragTarget + dragOffset}");
+            UpdateDragEffect();
         }
     }
 
@@ -117,6 +121,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (!isDragging) return;
 
         isDragging = false;
+        //effect.SetActive(false);
         transform.DOScale(1f, highlightDuration);
 
         if (GameManager.Instance.circleAreaCollider.OverlapPoint(transform.position))
@@ -131,6 +136,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     void PlaceInCircle()
     {
+        //effect.SetActive(false);
         hasBeenDropped = true;
         isInCircle = true;
 
@@ -207,6 +213,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         SmoothReturnToSlot();
 
+        effect.SetActive(false);
         hasBeenDropped = false;
         isInCircle = false;
 
@@ -216,6 +223,43 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     #endregion
 
     #region ====== Visual Effects ======
+
+    void UpdateDragEffect()
+    {
+        if (!isDragging)
+        {
+            effect.SetActive(false);
+            return;
+        }
+
+        // Check if inside circle
+        bool insideCircle = GameManager.Instance.circleAreaCollider
+            .OverlapPoint(transform.position);
+
+        if (insideCircle)
+        {
+            effect.SetActive(true);
+        }
+        else
+        {
+            effect.SetActive(false);
+            return;
+        }
+
+            // Check if touching any other magnet in circle
+            foreach (Magnet other in GameManager.Instance.GetMagnetsInCircle())
+            {
+                if (other == this) continue;
+
+                if (colliderRef != null && colliderRef.IsTouching(other.GetComponent<Collider2D>()))
+                {
+                    effect.SetActive(true);
+                    return;
+                }
+            }
+
+        effect.SetActive(false);
+    }
 
     void HighlightOnTouch()
     {
