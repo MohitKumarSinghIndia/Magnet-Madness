@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.InitializeGameplayUI();
 
         UIManager.Instance.LoadGameplayPanel();
+
+        GoogleAdsManager.Instance.ShowBanner();
     }
 
     // -------------------------------------------------------------------

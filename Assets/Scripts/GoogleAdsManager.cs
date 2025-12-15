@@ -29,7 +29,7 @@ public class GoogleAdsManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    IEnumerator Start()
+    private void Start()
     {
         MobileAds.Initialize((InitializationStatus initStatus) =>
         {
@@ -39,8 +39,6 @@ public class GoogleAdsManager : MonoBehaviour
             LoadInterstitial();
             LoadRewarded();
         });
-        yield return new WaitForSeconds(2);
-        ShowBanner();
     }
 
     #region ------------------------ BANNER -------------------------------
