@@ -51,12 +51,11 @@ public class GoogleAdsManager : MonoBehaviour
             bannerView = null;
         }
 
-        int deviceWidth = MobileAds.Utils.GetDeviceSafeWidth();
+        //int deviceWidth = MobileAds.Utils.GetDeviceSafeWidth();
 
-        // Define the anchored adaptive ad size.
-        AdSize adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(deviceWidth);
+        //AdSize adaptiveSize = AdSize.GetCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(deviceWidth);
 
-        bannerView = new BannerView(bannerAdUnitId, adaptiveSize, AdPosition.Bottom);
+        bannerView = new BannerView(bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
 
         bannerView.OnBannerAdLoaded += () => Debug.Log("Banner Loaded");
         bannerView.OnBannerAdLoadFailed += (LoadAdError error) => Debug.Log("Banner Loaded Failed");
