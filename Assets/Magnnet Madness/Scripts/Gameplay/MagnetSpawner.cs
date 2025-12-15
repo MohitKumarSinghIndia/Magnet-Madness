@@ -40,11 +40,12 @@ public class MagnetSpawner : MonoBehaviour
             obj = Instantiate(magnetPrefab, slots[i]);
             obj.transform.localPosition = Vector3.zero;
 
-            img = obj.GetComponent<Image>();
-            img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
-            img.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
-
             magnet = obj.GetComponent<Magnet>();
+            img = obj.GetComponent<Image>();
+
+            img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+            img.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
+
             magnet.owner = owner;
             magnet.SetSlotIndex(i);
         }
@@ -82,11 +83,12 @@ public class MagnetSpawner : MonoBehaviour
         GameObject obj = Instantiate(magnetPrefab, slot);
         obj.transform.localPosition = Vector3.zero;
 
-        Image img = obj.GetComponent<Image>();
-        img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
-        img.color = (owner == PlayerTurn.Player1) ? Color.blue : Color.red;
-
         Magnet magnet = obj.GetComponent<Magnet>();
+        Image img = obj.GetComponent<Image>();
+
+        img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+        img.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
+
         magnet.owner = owner;
         magnet.SetSlotIndex(freeSlot);
     }

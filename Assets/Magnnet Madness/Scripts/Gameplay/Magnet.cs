@@ -34,7 +34,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     private Tween activeTween;
     private Vector3 smoothDragTarget;
-    public Vector3 dragOffset = new(0, .25f, 0);
+    public Vector3 dragOffset = new(0, 100f, 0);
     public float dragSmoothSpeed = 15f;
 
     public float highlightScaleUp = 1.15f;
@@ -63,6 +63,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 smoothDragTarget + dragOffset,
                 Time.deltaTime * dragSmoothSpeed
             );
+
+            Debug.Log($"----------- smoothDragTarget: {smoothDragTarget}   dragOffset: {dragOffset}   finalPos: {smoothDragTarget + dragOffset}");
         }
     }
 

@@ -17,16 +17,8 @@ public class GameManager : MonoBehaviour
     [Header("Gameplay Settings")]
     public int initialMagnetCount = 5;
 
-    #endregion
-
-    #region Ad Settings
-
     [Header("Ad Settings")]
     private int gameOverCount = 0;
-
-    #endregion
-
-    #region References
 
     [Header("Player Magnet Holders")]
     public Transform player1MagnetHolder;
@@ -38,10 +30,7 @@ public class GameManager : MonoBehaviour
     [Header("Spawner")]
     public MagnetSpawner magnetSpawner;
 
-    #endregion
-
-    #region Game State
-
+    [Header("Game State")]
     public int player1Magnets;
     public int player2Magnets;
 
