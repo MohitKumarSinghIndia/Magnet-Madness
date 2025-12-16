@@ -67,8 +67,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
                 smoothDragTarget + dragOffset,
                 Time.deltaTime * dragSmoothSpeed
             );
-
-            UpdateDragEffect();
         }
     }
 
@@ -91,6 +89,10 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (owner != GameManager.Instance.currentTurn) return;
 
         isDragging = true;
+
+        if (effect != null)
+            effect.SetActive(true);
+
         KillTween();
 
         HighlightOnTouch();
@@ -121,7 +123,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (!isDragging) return;
 
         isDragging = false;
-        //effect.SetActive(false);
+        effect.SetActive(false);
         transform.DOScale(1f, highlightDuration);
 
         if (GameManager.Instance.circleAreaCollider.OverlapPoint(transform.position))
@@ -136,7 +138,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     void PlaceInCircle()
     {
-        //effect.SetActive(false);
+        effect.SetActive(false);
         hasBeenDropped = true;
         isInCircle = true;
 
@@ -144,7 +146,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         GameManager.Instance.RemoveMagnetFromPlayer(owner);
         GameManager.Instance.AddPlaced(owner);
 
-        // MULTIPLE COLLISION CHECK
         List<Magnet> hits = GetAllHits();
 
         if (hits.Count > 0)
@@ -153,13 +154,11 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             return;
         }
 
-        // Normal flow
         GameManager.Instance.CheckWinCondition();
         GameManager.Instance.SwitchTurn();
         UIManager.Instance.UpdateGameplayUI();
     }
 
-    // Returns ALL magnets touching this magnet
     List<Magnet> GetAllHits()
     {
         List<Magnet> collided = new List<Magnet>();
@@ -223,43 +222,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     #endregion
 
     #region ====== Visual Effects ======
-
-    void UpdateDragEffect()
-    {
-        if (!isDragging)
-        {
-            effect.SetActive(false);
-            return;
-        }
-
-        // Check if inside circle
-        bool insideCircle = GameManager.Instance.circleAreaCollider
-            .OverlapPoint(transform.position);
-
-        if (insideCircle)
-        {
-            effect.SetActive(true);
-        }
-        else
-        {
-            effect.SetActive(false);
-            return;
-        }
-
-            // Check if touching any other magnet in circle
-            foreach (Magnet other in GameManager.Instance.GetMagnetsInCircle())
-            {
-                if (other == this) continue;
-
-                if (colliderRef != null && colliderRef.IsTouching(other.GetComponent<Collider2D>()))
-                {
-                    effect.SetActive(true);
-                    return;
-                }
-            }
-
-        effect.SetActive(false);
-    }
 
     void HighlightOnTouch()
     {
