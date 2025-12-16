@@ -118,7 +118,7 @@ MonoBehaviour:
   owner: 0
   slotIndex: -1
   minDistanceToPickup: 1
-  magnetImg: {fileID: 2079841240889978837}
+  magnetImage: {fileID: 2079841240889978837}
   effect: {fileID: 4809032273463430584}
   player1Color: {r: 0.54901963, g: 0.54901963, b: 1, a: 1}
   player2Color: {r: 1, g: 0.29411766, b: 0.19607843, a: 1}
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 6286314721476980282}
   - component: {fileID: 2079841240889978837}
   m_Layer: 0
-  m_Name: sprite
+  m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,14 +184,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: fc38caa3525876e4898b1c9a8f50271f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -212,6 +212,10 @@ PrefabInstance:
     - target: {fileID: 2029022263192760139, guid: 8def629a5eb782444a1686cdf1cd8227, type: 3}
       propertyPath: m_Name
       value: Wave Anim
+      objectReference: {fileID: 0}
+    - target: {fileID: 2029022263192760139, guid: 8def629a5eb782444a1686cdf1cd8227, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5612776876163980529, guid: 8def629a5eb782444a1686cdf1cd8227, type: 3}
       propertyPath: m_Pivot.x

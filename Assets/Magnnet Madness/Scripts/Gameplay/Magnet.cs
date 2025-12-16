@@ -16,7 +16,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     public float minDistanceToPickup = 1f;
 
     [Header("Colors")]
-    public Image magnetImg;
+    public Image magnetImage;
     public GameObject effect;
     public Color player1Color;
     public Color player2Color;

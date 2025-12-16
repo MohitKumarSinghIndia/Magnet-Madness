@@ -32,7 +32,7 @@ public class MagnetSpawner : MonoBehaviour
         int skin = GameCore.Instance.gameData.selectedMagnetSkin;
 
         GameObject obj;
-        Image img;
+        Image image;
         Magnet magnet;
 
         for (int i = 0; i < count; i++)
@@ -41,10 +41,10 @@ public class MagnetSpawner : MonoBehaviour
             obj.transform.localPosition = Vector3.zero;
 
             magnet = obj.GetComponent<Magnet>();
-            img = magnet.magnetImg;
+            image = magnet.magnetImage;
 
-            img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
-            img.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
+            image.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+            image.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
 
             magnet.owner = owner;
             magnet.SetSlotIndex(i);
@@ -84,10 +84,10 @@ public class MagnetSpawner : MonoBehaviour
         obj.transform.localPosition = Vector3.zero;
 
         Magnet magnet = obj.GetComponent<Magnet>();
-        Image img = magnet.magnetImg;
+        Image image = magnet.magnetImage;
 
-        img.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
-        img.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
+        image.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+        image.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
 
         magnet.owner = owner;
         magnet.SetSlotIndex(freeSlot);
