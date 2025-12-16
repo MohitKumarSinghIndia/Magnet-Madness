@@ -15,11 +15,20 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     [Header("Pickup Settings")]
     public float minDistanceToPickup = 1f;
 
-    [Header("Colors")]
+    [Header("Magnets Colors Settings")]
     public Image magnetImage;
     public GameObject effect;
     public Color player1Color;
     public Color player2Color;
+
+    [Header("Drag Collision Shake Settings")]
+    public float maxShakeStrength = 10f;
+    public float minShakeStrength = 2f;
+    public float shakeDistance = 120f;
+    public float dragShakeDuration = 0.15f;
+
+    [Header("Visual Root")]
+    public Transform visualRoot;
 
     #endregion
 
@@ -34,17 +43,21 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private RectTransform rectTransform;
     private Canvas parentCanvas;
 
-    private Tween activeTween;
-    private Vector3 smoothDragTarget;
+    [Header("Drag Offest Settings")]
     public Vector3 dragOffset = new(0, 100f, 0);
     public float dragSmoothSpeed = 15f;
+    private Vector3 smoothDragTarget;
+    private Tween activeTween;
 
     public float highlightScaleUp = 1.15f;
     public float highlightDuration = 0.15f;
 
+    private Dictionary<Magnet, Tween> dragShakeTweens = new();
+
     #endregion
 
     #region ====== Unity Lifecycle ======
+
     private void OnEnable()
     {
         mainCamera = Camera.main;
@@ -52,7 +65,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         rectTransform = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
 
-        effect.SetActive(false);
+        if (effect != null)
+            effect.SetActive(false);
 
         if (colliderRef != null)
             colliderRef.isTrigger = true;
@@ -60,19 +74,21 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     void Update()
     {
-        if (isDragging)
-        {
-            rectTransform.position = Vector3.Lerp(
-                rectTransform.position,
-                smoothDragTarget + dragOffset,
-                Time.deltaTime * dragSmoothSpeed
-            );
-        }
+        if (!isDragging) return;
+
+        rectTransform.position = Vector3.Lerp(
+            rectTransform.position,
+            smoothDragTarget + dragOffset,
+            Time.deltaTime * dragSmoothSpeed
+        );
+
+        HandleDragCollisionShake();
     }
 
     #endregion
 
     #region ====== Public Setup ======
+
     public void SetSlotIndex(int index)
     {
         slotIndex = index;
@@ -94,7 +110,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             effect.SetActive(true);
 
         KillTween();
-
         HighlightOnTouch();
     }
 
@@ -105,8 +120,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         Vector2 localPoint;
 
         Camera cam = (parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay)
-                     ? null
-                     : parentCanvas.worldCamera;
+            ? null
+            : parentCanvas.worldCamera;
 
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 parentCanvas.transform as RectTransform,
@@ -124,6 +139,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         isDragging = false;
         effect.SetActive(false);
+        StopAllDragShakes();
         transform.DOScale(1f, highlightDuration);
 
         if (GameManager.Instance.circleAreaCollider.OverlapPoint(transform.position))
@@ -139,6 +155,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     void PlaceInCircle()
     {
         effect.SetActive(false);
+        StopAllDragShakes();
+
         hasBeenDropped = true;
         isInCircle = true;
 
@@ -161,14 +179,12 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     List<Magnet> GetAllHits()
     {
-        List<Magnet> collided = new List<Magnet>();
+        List<Magnet> collided = new();
 
         foreach (Magnet other in GameManager.Instance.GetMagnetsInCircle())
         {
             if (colliderRef != null && colliderRef.IsTouching(other.GetComponent<Collider2D>()))
-            {
                 collided.Add(other);
-            }
         }
 
         return collided;
@@ -176,17 +192,14 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     void HandleMultipleHits(List<Magnet> hitMagnets)
     {
-        // Shake this magnet
-        MagnetShake();
+        StopAllDragShakes();
 
-        // Vibrate on collision
+        MagnetShake();
         HapticManager.VibrateMedium();
 
-        // Shake all hit magnets
         foreach (var m in hitMagnets)
             m.MagnetShake();
 
-        // Process after a delay
         DOVirtual.DelayedCall(0.5f, () =>
         {
             ProcessMultipleCollisions(hitMagnets);
@@ -205,7 +218,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             Destroy(hitMagnet.gameObject);
         }
 
-        // Remove THIS magnet also
         GameManager.Instance.UnregisterMagnetFromCircle(this);
         GameManager.Instance.AddMagnetToPlayer(owner);
         GameManager.Instance.RemovePlaced(owner);
@@ -221,11 +233,113 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     #endregion
 
+    #region ====== Drag Collision Shake ======
+
+    void HandleDragCollisionShake()
+    {
+        if (!GameManager.Instance.circleAreaCollider.OverlapPoint(transform.position))
+        {
+            StopAllDragShakes();
+            return;
+        }
+
+        bool touchingAny = false;
+        float closestStrength = 0f;
+
+        foreach (Magnet other in GameManager.Instance.GetMagnetsInCircle())
+        {
+            if (other == this) continue;
+
+            Collider2D otherCol = other.GetComponent<Collider2D>();
+            if (colliderRef == null || otherCol == null) continue;
+
+            if (colliderRef.IsTouching(otherCol))
+            {
+                touchingAny = true;
+
+                float dist = Vector3.Distance(transform.position, other.transform.position);
+                float t = Mathf.InverseLerp(shakeDistance, 0f, dist);
+                float strength = Mathf.Lerp(minShakeStrength, maxShakeStrength, t);
+
+                StartOrUpdateDragShake(other, strength);
+                closestStrength = Mathf.Max(closestStrength, strength);
+            }
+            else
+            {
+                StopDragShake(other);
+            }
+        }
+
+        if (touchingAny)
+            StartOrUpdateSelfDragShake(closestStrength);
+        else
+            StopSelfDragShake();
+    }
+
+    void StartOrUpdateDragShake(Magnet target, float strength)
+    {
+        if (dragShakeTweens.ContainsKey(target)) return;
+
+        Tween t = target.visualRoot.DOShakePosition(
+            dragShakeDuration,
+            strength,
+            15,
+            90,
+            false,
+            true
+        ).SetLoops(-1).SetEase(Ease.Linear);
+
+        dragShakeTweens[target] = t;
+    }
+
+    void StartOrUpdateSelfDragShake(float strength)
+    {
+        if (dragShakeTweens.ContainsKey(this)) return;
+
+        Tween t = visualRoot.DOShakePosition(
+            dragShakeDuration,
+            strength,
+            15,
+            90,
+            false,
+            true
+        ).SetLoops(-1).SetEase(Ease.Linear);
+
+        dragShakeTweens[this] = t;
+    }
+
+    void StopDragShake(Magnet target)
+    {
+        if (!dragShakeTweens.ContainsKey(target)) return;
+
+        dragShakeTweens[target].Kill();
+        dragShakeTweens.Remove(target);
+    }
+
+    void StopSelfDragShake()
+    {
+        if (!dragShakeTweens.ContainsKey(this)) return;
+
+        dragShakeTweens[this].Kill();
+        dragShakeTweens.Remove(this);
+    }
+
+    void StopAllDragShakes()
+    {
+        foreach (var t in dragShakeTweens.Values)
+            t.Kill();
+
+        dragShakeTweens.Clear();
+    }
+
+    #endregion
+
     #region ====== Visual Effects ======
 
     void HighlightOnTouch()
     {
-        transform.DOScale(highlightScaleUp, highlightDuration).SetEase(Ease.OutBack);
+        transform.DOScale(highlightScaleUp, highlightDuration)
+            .SetEase(Ease.OutBack);
     }
 
     void SmoothReturnToSlot()
@@ -233,13 +347,16 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         Transform slot = GameManager.Instance.magnetSpawner.playerSlots[owner][slotIndex];
 
         KillTween();
-        activeTween = rectTransform.DOMove(slot.position, 0.5f).SetEase(Ease.OutCubic);
+        activeTween = rectTransform.DOMove(slot.position, 0.5f)
+            .SetEase(Ease.OutCubic);
     }
 
     void MagnetShake()
     {
         KillTween();
-        activeTween = transform.DOShakePosition(0.5f, 10f, 20, 90, false, true);
+        activeTween = visualRoot.DOShakePosition(
+            0.5f, 10f, 20, 90, false, true
+        );
     }
 
     void KillTween()
