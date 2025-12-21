@@ -85,6 +85,10 @@ public class UIManager : MonoBehaviour
         gameplayPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
 
+        // Clear Player name InputFields
+        player1Input.text = string.Empty;
+        player2Input.text = string.Empty;
+
         HideAllMenuSubPanels();
         menuButtonsPanel.SetActive(true);
     }

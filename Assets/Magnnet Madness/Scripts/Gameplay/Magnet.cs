@@ -314,6 +314,9 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         dragShakeTweens[target].Kill();
         dragShakeTweens.Remove(target);
+        target.visualRoot.localPosition = Vector3.zero;
+
+        Debug.Log("Stop Shaking--------------");
     }
 
     void StopSelfDragShake()
@@ -322,12 +325,18 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         dragShakeTweens[this].Kill();
         dragShakeTweens.Remove(this);
+        this.visualRoot.localPosition = Vector3.zero;
+
+        Debug.Log("Stop SELF Shaking--------------");
     }
 
     void StopAllDragShakes()
     {
-        foreach (var t in dragShakeTweens.Values)
-            t.Kill();
+        foreach (var t in dragShakeTweens)
+        {
+            t.Value.Kill();
+            t.Key.visualRoot.localPosition = Vector3.zero;
+        }
 
         dragShakeTweens.Clear();
     }
