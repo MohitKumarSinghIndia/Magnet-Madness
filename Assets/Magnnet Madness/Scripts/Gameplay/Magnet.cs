@@ -212,7 +212,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         {
             GameManager.Instance.UnregisterMagnetFromCircle(hitMagnet);
             GameManager.Instance.AddMagnetToPlayer(owner);
-            GameManager.Instance.RemovePlaced(owner);
+            GameManager.Instance.RemovePlaced(hitMagnet.owner);
             GameManager.Instance.magnetSpawner.RespawnMagnet(owner);
 
             Destroy(hitMagnet.gameObject);
@@ -229,6 +229,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         isInCircle = false;
 
         UIManager.Instance.UpdateGameplayUI();
+        GameManager.Instance.CheckWinCondition();
     }
 
     #endregion

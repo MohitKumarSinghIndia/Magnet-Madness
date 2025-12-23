@@ -30,13 +30,17 @@ public class GameManager : MonoBehaviour
     [Header("Spawner")]
     public MagnetSpawner magnetSpawner;
 
-    [Header("Game State")]
+    [Header("Players Magnets")]
+    [Space(10)]
     public int player1Magnets;
     public int player2Magnets;
 
-    public int player1Placed;
-    public int player2Placed;
+    [Space(10)]
+    public int player1PlacedMagnets;
+    public int player2PlacedMagnets;
 
+    [Header("Current Player Turn")]
+    [Space(5)]
     public PlayerTurn currentTurn = PlayerTurn.Player1;
 
     private List<Magnet> magnetsInCircle = new List<Magnet>();
@@ -71,8 +75,8 @@ public class GameManager : MonoBehaviour
         player1Magnets = initialMagnetCount;
         player2Magnets = initialMagnetCount;
 
-        player1Placed = 0;
-        player2Placed = 0;
+        player1PlacedMagnets = 0;
+        player2PlacedMagnets = 0;
 
         magnetsInCircle.Clear();
         currentTurn = PlayerTurn.Player1;
@@ -133,17 +137,17 @@ public class GameManager : MonoBehaviour
     public void AddPlaced(PlayerTurn player)
     {
         if (player == PlayerTurn.Player1)
-            player1Placed++;
+            player1PlacedMagnets++;
         else
-            player2Placed++;
+            player2PlacedMagnets++;
     }
 
     public void RemovePlaced(PlayerTurn player)
     {
         if (player == PlayerTurn.Player1)
-            player1Placed = Mathf.Max(0, player1Placed - 1);
+            player1PlacedMagnets = Mathf.Max(0, player1PlacedMagnets - 1);
         else
-            player2Placed = Mathf.Max(0, player2Placed - 1);
+            player2PlacedMagnets = Mathf.Max(0, player2PlacedMagnets - 1);
     }
 
     #endregion
@@ -155,11 +159,11 @@ public class GameManager : MonoBehaviour
         if (isGameOver)
             return;
 
-        if (player1Placed >= initialMagnetCount)
+        if (player1Magnets <= 0)
         {
             HandleGameOver(GameCore.Instance.gameData.player1Name);
         }
-        else if (player2Placed >= initialMagnetCount)
+        else if (player2Magnets <= 0)
         {
             HandleGameOver(GameCore.Instance.gameData.player2Name);
         }
