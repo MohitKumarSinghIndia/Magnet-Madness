@@ -21,12 +21,15 @@ public class UIManager : MonoBehaviour
     public TMP_InputField player1Input;
     public TMP_InputField player2Input;
 
+    [Header("Top Panel UI")]
+    [SerializeField] private int coinAmount;
+    public TextMeshProUGUI coinsText;
+
     [Header("Gameplay UI")]
     public TextMeshProUGUI player1NameText;
     public TextMeshProUGUI player2NameText;
     public TextMeshProUGUI player1CountText;
     public TextMeshProUGUI player2CountText;
-
     public GameObject player1TurnImage;
     public GameObject player2TurnImage;
 
@@ -41,9 +44,14 @@ public class UIManager : MonoBehaviour
 
     private bool isGameOver = false;
 
+    #region Unity Methods
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
         ShowMainMenuOnly();
     }
 
@@ -53,7 +61,7 @@ public class UIManager : MonoBehaviour
         {
             GameManager.Instance.OnRestartButtonClicked();
         });
-    
+
         homeButton.onClick.AddListener(() =>
         {
             GameManager.Instance.ReturnToMainMenu();
@@ -67,9 +75,9 @@ public class UIManager : MonoBehaviour
         homeButton.onClick.RemoveAllListeners();
     }
 
-    // -------------------------------------------------------------------
-    // PANEL NAVIGATION
-    // -------------------------------------------------------------------
+    #endregion
+
+    #region PANEL NAVIGATION
 
     private void HideAllMenuSubPanels()
     {
@@ -85,12 +93,14 @@ public class UIManager : MonoBehaviour
         gameplayPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
 
-        // Clear Player name InputFields
         player1Input.text = string.Empty;
         player2Input.text = string.Empty;
 
         HideAllMenuSubPanels();
         menuButtonsPanel.SetActive(true);
+
+        RefreshCoinsUI();
+
     }
 
     public void LoadGameplayPanel()
@@ -108,26 +118,22 @@ public class UIManager : MonoBehaviour
     {
         HideAllMenuSubPanels();
         target.SetActive(true);
+
+        RefreshCoinsUI();
     }
 
     public void OnBackToMainMenu()
     {
         HideAllMenuSubPanels();
         menuButtonsPanel.SetActive(true);
-    }
 
-    public void OnQuitClicked()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-    Application.Quit();
-#endif
+        RefreshCoinsUI();
     }
+    #endregion
 
-    // -------------------------------------------------------------------
+    #region Functions
+
     // START GAME
-    // -------------------------------------------------------------------
 
     public void OnStartGameClicked()
     {
@@ -145,9 +151,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.InitializeGame();
     }
 
-    // -------------------------------------------------------------------
     // GAMEPLAY UI
-    // -------------------------------------------------------------------
 
     public void InitializeGameplayUI()
     {
@@ -169,6 +173,8 @@ public class UIManager : MonoBehaviour
         UpdateTurnIndicator(GameManager.Instance.currentTurn);
     }
 
+    // TURN INDICATOR
+
     private void UpdateTurnIndicator(PlayerTurn turn)
     {
         if (isGameOver) return;
@@ -182,9 +188,15 @@ public class UIManager : MonoBehaviour
         else player2Holder.SetAsLastSibling();
     }
 
+    // WIN PANEL
+
     public void ShowWin(string winnerName)
     {
         isGameOver = true;
+
+        // GIVE WIN COINS
+        GameCore.Instance.gameData.AddCoins(50);
+        RefreshCoinsUI();
 
         GameOverPanel.gameObject.SetActive(true);
         GameOverPanel.SetAsLastSibling();
@@ -194,4 +206,24 @@ public class UIManager : MonoBehaviour
         player1TurnImage.SetActive(false);
         player2TurnImage.SetActive(false);
     }
+
+    // COINS UI
+
+    public void RefreshCoinsUI()
+    {
+        if (GameCore.Instance == null || GameCore.Instance.gameData == null)
+        {
+            Debug.LogWarning("GameCore or GameData not ready yet");
+            return;
+        }
+
+        coinAmount = GameCore.Instance.gameData.GetCoins();
+
+        if (coinsText != null)
+        {
+            coinsText.text = coinAmount.ToString();
+        }
+    }
+
+    #endregion
 }

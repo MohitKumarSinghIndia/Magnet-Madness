@@ -10,9 +10,18 @@ public class GameData_SO : ScriptableObject
     public bool sfxEnabled = true;
     public bool vibrationEnabled = true;
 
-    public int selectedMagnetSkin = 0;
+    [Header("Currency")]
+    public int coins = 0;
 
-    public void LoadFromPrefs()
+    [Header("Skins")]
+    public int selectedMagnetSkin = 0;
+    public bool[] unlockedSkins;
+
+    // -------------------------------------------------------------------
+    // LOAD / SAVE
+    // -------------------------------------------------------------------
+
+    public void LoadFromPrefs(int skinCount)
     {
         player1Name = PlayerPrefs.GetString("p1name", player1Name);
         player2Name = PlayerPrefs.GetString("p2name", player2Name);
@@ -21,7 +30,18 @@ public class GameData_SO : ScriptableObject
         sfxEnabled = PlayerPrefs.GetInt("sfx", 1) == 1;
         vibrationEnabled = PlayerPrefs.GetInt("vibration", 1) == 1;
 
+        coins = PlayerPrefs.GetInt("coins", 0);
         selectedMagnetSkin = PlayerPrefs.GetInt("skin", 0);
+
+        // INIT UNLOCKED SKINS
+        if (unlockedSkins == null || unlockedSkins.Length != skinCount)
+        {
+            unlockedSkins = new bool[skinCount];
+            unlockedSkins[0] = true; // first skin free
+        }
+
+        for (int i = 0; i < unlockedSkins.Length; i++)
+            unlockedSkins[i] = PlayerPrefs.GetInt("skin_unlocked_" + i, i == 0 ? 1 : 0) == 1;
     }
 
     public void Save()
@@ -33,8 +53,51 @@ public class GameData_SO : ScriptableObject
         PlayerPrefs.SetInt("sfx", sfxEnabled ? 1 : 0);
         PlayerPrefs.SetInt("vibration", vibrationEnabled ? 1 : 0);
 
+        PlayerPrefs.SetInt("coins", coins);
         PlayerPrefs.SetInt("skin", selectedMagnetSkin);
 
+        for (int i = 0; i < unlockedSkins.Length; i++)
+            PlayerPrefs.SetInt("skin_unlocked_" + i, unlockedSkins[i] ? 1 : 0);
+
         PlayerPrefs.Save();
+    }
+
+    // -------------------------------------------------------------------
+    // COIN FUNCTIONS
+    // -------------------------------------------------------------------
+
+    /// Get current coins
+    
+    public int GetCoins()
+    {
+        return coins;
+    }
+
+    // Add coins (reward, win, ad, etc.)
+    public void AddCoins(int amount)
+    {
+        if (amount <= 0) return;
+
+        coins += amount;
+        Save();
+    }
+
+    // Spend coins
+    public bool SpendCoins(int amount)
+    {
+        if (amount <= 0) return true;
+
+        if (coins < amount)
+            return false;
+
+        coins -= amount;
+        Save();
+        return true;
+    }
+
+    // Check if player has enough coins
+    public bool HasEnoughCoins(int amount)
+    {
+        return coins >= amount;
     }
 }

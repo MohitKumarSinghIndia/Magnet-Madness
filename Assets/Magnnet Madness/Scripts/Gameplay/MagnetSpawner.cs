@@ -29,7 +29,10 @@ public class MagnetSpawner : MonoBehaviour
     void SpawnFor(PlayerTurn owner, int count)
     {
         var slots = playerSlots[owner];
-        int skin = GameCore.Instance.gameData.selectedMagnetSkin;
+
+        int skin = (owner == PlayerTurn.Player1)
+            ? GameCore.Instance.gameData.selectedMagnetSkin
+            : 0; // Player 2 default skin
 
         GameObject obj;
         Image image;
@@ -44,12 +47,12 @@ public class MagnetSpawner : MonoBehaviour
             image = magnet.magnetImage;
 
             image.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
-            image.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
 
             magnet.owner = owner;
             magnet.SetSlotIndex(i);
         }
     }
+
 
     int GetFreeSlot(PlayerTurn owner)
     {
@@ -76,7 +79,9 @@ public class MagnetSpawner : MonoBehaviour
     public void RespawnMagnet(PlayerTurn owner)
     {
         int freeSlot = GetFreeSlot(owner);
-        int skin = GameCore.Instance.gameData.selectedMagnetSkin;
+        int skin = (owner == PlayerTurn.Player1)
+            ? GameCore.Instance.gameData.selectedMagnetSkin
+            : 0; // Player 2 default skin
 
         Transform slot = playerSlots[owner][freeSlot];
 
@@ -87,9 +92,9 @@ public class MagnetSpawner : MonoBehaviour
         Image image = magnet.magnetImage;
 
         image.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
-        image.color = (owner == PlayerTurn.Player1) ? magnet.player1Color : magnet.player2Color;
 
         magnet.owner = owner;
         magnet.SetSlotIndex(freeSlot);
     }
+
 }

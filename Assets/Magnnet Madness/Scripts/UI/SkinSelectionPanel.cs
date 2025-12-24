@@ -1,65 +1,83 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class SkinSelectionPanel : MonoBehaviour
 {
     public Transform gridParent;
     public GameObject skinPrefab;
-    public Button selectButton;
-    public Button backButton;
+    private int appliedSkinIndex;
 
-    int selectedSkinIndex = 0;
-
-    void OnEnable()
+    private void OnEnable()
     {
+        appliedSkinIndex = GameCore.Instance.gameData.selectedMagnetSkin;
         LoadGrid();
-        selectButton.onClick.AddListener(ApplySkin);
-        backButton.onClick.AddListener(() => gameObject.SetActive(false));
     }
 
-    void OnDisable()
-    {
-        selectButton.onClick.RemoveAllListeners();
-        backButton.onClick.RemoveAllListeners();
-    }
-
-    void LoadGrid()
+    private void LoadGrid()
     {
         foreach (Transform t in gridParent)
             Destroy(t.gameObject);
 
         var lib = GameCore.Instance.skinLibrary;
+        var data = GameCore.Instance.gameData;
 
         for (int i = 0; i < lib.magnetSkins.Length; i++)
         {
             GameObject item = Instantiate(skinPrefab, gridParent);
             SkinItemButton btn = item.GetComponent<SkinItemButton>();
 
-            btn.Init(i, lib.magnetSkins[i], this);
-
-            if (i == GameCore.Instance.gameData.selectedMagnetSkin)
-            {
-                selectedSkinIndex = i;
-                btn.selectionHighlight.SetActive(true);
-            }
+            btn.Init(
+                i,
+                lib.magnetSkins[i],
+                this,
+                data.unlockedSkins[i]
+            );
         }
     }
 
-    public void OnSkinSelected(int index)
+    // ONE TAP ENTRY POINT
+    public void OnSkinItemClicked(SkinItemButton btn)
     {
-        selectedSkinIndex = index;
+        var data = GameCore.Instance.gameData;
+        var lib = GameCore.Instance.skinLibrary;
 
-        foreach (Transform t in gridParent)
+        int index = btn.skinIndex;
+        int price = lib.GetPrice(index);
+
+        Debug.Log($"Coins before action: {data.GetCoins()}");
+
+        // BUY IF LOCKED
+        if (!data.unlockedSkins[index])
         {
-            SkinItemButton btn = t.GetComponent<SkinItemButton>();
-            btn.selectionHighlight.SetActive(btn.skinIndex == index);
+            // Check coins
+            if (!data.HasEnoughCoins(price))
+            {
+                Debug.Log($"Not enough coins. Need {price}");
+                return;
+            }
+
+            // Spend coins
+            bool spent = data.SpendCoins(price);
+            if (!spent)
+            {
+                Debug.Log("SpendCoins failed unexpectedly");
+                return;
+            }
+
+            // Unlock skin
+            data.unlockedSkins[index] = true;
+            btn.Unlock();
+
+            Debug.Log($"Coins after purchase: {data.GetCoins()}");
         }
+
+        //  APPLY SKIN
+        appliedSkinIndex = index;
+        data.selectedMagnetSkin = index;
+        data.Save();
+
+        UIManager.Instance.RefreshCoinsUI();
+
+        Debug.Log($"Applied skin {index}");
     }
 
-    void ApplySkin()
-    {
-        GameCore.Instance.gameData.selectedMagnetSkin = selectedSkinIndex;
-        GameCore.Instance.gameData.Save();
-        UIManager.Instance.OnBackToMainMenu();
-    }
 }

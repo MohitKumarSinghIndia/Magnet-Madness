@@ -10,16 +10,11 @@ public class GameCore : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        //if (Instance != null)
-        //{
-        //    Destroy(gameObject);
-        //    return;
-        //}
 
-        //Instance = this;
-        //DontDestroyOnLoad(gameObject);
+        // Make sure prices exist
+        skinLibrary.AutoSetupPrices();
 
-        // Load saved preferences
-        gameData.LoadFromPrefs();
+        // Load saved data
+        gameData.LoadFromPrefs(skinLibrary.magnetSkins.Length);
     }
 }

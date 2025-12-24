@@ -17,9 +17,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     [Header("Magnets Colors Settings")]
     public Image magnetImage;
-    public GameObject effect;
-    public Color player1Color;
-    public Color player2Color;
+    public GameObject waveEffect;
 
     [Header("Drag Collision Shake Settings")]
     public float maxShakeStrength = 10f;
@@ -65,8 +63,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         rectTransform = GetComponent<RectTransform>();
         parentCanvas = GetComponentInParent<Canvas>();
 
-        if (effect != null)
-            effect.SetActive(false);
+        if (waveEffect != null)
+            waveEffect.SetActive(false);
 
         if (colliderRef != null)
             colliderRef.isTrigger = true;
@@ -106,8 +104,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         isDragging = true;
 
-        if (effect != null)
-            effect.SetActive(true);
+        if (waveEffect != null)
+            waveEffect.SetActive(true);
 
         KillTween();
         HighlightOnTouch();
@@ -138,7 +136,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (!isDragging) return;
 
         isDragging = false;
-        effect.SetActive(false);
+        waveEffect.SetActive(false);
         StopAllDragShakes();
         transform.DOScale(1f, highlightDuration);
 
@@ -154,7 +152,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
     void PlaceInCircle()
     {
-        effect.SetActive(false);
+        waveEffect.SetActive(false);
         StopAllDragShakes();
 
         hasBeenDropped = true;
@@ -224,7 +222,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         SmoothReturnToSlot();
 
-        effect.SetActive(false);
+        waveEffect.SetActive(false);
         hasBeenDropped = false;
         isInCircle = false;
 
