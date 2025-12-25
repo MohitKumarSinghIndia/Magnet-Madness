@@ -12,6 +12,8 @@ public class SettingsPanel : MonoBehaviour
         musicToggle.onValueChanged.AddListener(OnMusicChanged);
         sfxToggle.onValueChanged.AddListener(OnSfxChanged);
         vibrationToggle.onValueChanged.AddListener(OnVibrationChanged);
+
+        LoadSettings();
     }
 
     void OnDisable()
@@ -19,6 +21,13 @@ public class SettingsPanel : MonoBehaviour
         musicToggle.onValueChanged.RemoveListener(OnMusicChanged);
         sfxToggle.onValueChanged.RemoveListener(OnSfxChanged);
         vibrationToggle.onValueChanged.RemoveListener(OnVibrationChanged);
+    }
+
+    private void LoadSettings()
+    {
+        musicToggle.isOn = GameCore.Instance.gameData.musicEnabled;
+        sfxToggle.isOn = GameCore.Instance.gameData.sfxEnabled;
+        vibrationToggle.isOn = GameCore.Instance.gameData.vibrationEnabled;
     }
 
     void OnMusicChanged(bool value)
