@@ -40,6 +40,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     private CircleCollider2D colliderRef;
     private RectTransform rectTransform;
     private Canvas parentCanvas;
+    private CanvasGroup canvasGroup;
 
     [Header("Drag Offest Settings")]
     public Vector3 dragOffset = new(0, 100f, 0);
@@ -61,6 +62,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         mainCamera = Camera.main;
         colliderRef = GetComponent<CircleCollider2D>();
         rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
         parentCanvas = GetComponentInParent<Canvas>();
 
         if (waveEffect != null)
@@ -144,6 +146,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             PlaceInCircle();
         else
             SmoothReturnToSlot();
+
     }
 
     #endregion
@@ -170,6 +173,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             return;
         }
 
+        SetMagnetCanvasGroupAlpha(isInCircle);
         GameManager.Instance.CheckWinCondition();
         GameManager.Instance.SwitchTurn();
         UIManager.Instance.UpdateGameplayUI();
@@ -226,8 +230,13 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         hasBeenDropped = false;
         isInCircle = false;
 
+        SetMagnetCanvasGroupAlpha(isInCircle);
         UIManager.Instance.UpdateGameplayUI();
         GameManager.Instance.CheckWinCondition();
+    }
+    private void SetMagnetCanvasGroupAlpha(bool isInsideCircle)
+    {
+        canvasGroup.ignoreParentGroups = isInsideCircle;
     }
 
     #endregion

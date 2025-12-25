@@ -30,8 +30,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI player2NameText;
     public TextMeshProUGUI player1CountText;
     public TextMeshProUGUI player2CountText;
-    public GameObject player1TurnImage;
-    public GameObject player2TurnImage;
+    private CanvasGroup player1CG;
+    private CanvasGroup player2CG;
 
     public RectTransform player1Holder;
     public RectTransform player2Holder;
@@ -53,6 +53,9 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         ShowMainMenuOnly();
+
+        player1CG = player1Holder.GetComponent<CanvasGroup>();
+        player2CG = player2Holder.GetComponent<CanvasGroup>();
     }
 
     private void OnEnable()
@@ -181,11 +184,18 @@ public class UIManager : MonoBehaviour
 
         bool isP1 = turn == PlayerTurn.Player1;
 
-        player1TurnImage.SetActive(isP1);
-        player2TurnImage.SetActive(!isP1);
+        //player1TurnImage.SetActive(isP1);
+        //player2TurnImage.SetActive(!isP1);
+
+        SetCanvasGroupAlpha(player1CG, isP1 ? 1f : 0.5f);
+        SetCanvasGroupAlpha(player2CG, isP1 ? 0.5f : 1f);
 
         if (isP1) player1Holder.SetAsLastSibling();
         else player2Holder.SetAsLastSibling();
+    }
+    private void SetCanvasGroupAlpha(CanvasGroup canvasGroup, float alpha)
+    {
+        canvasGroup.alpha = alpha;
     }
 
     // WIN PANEL
@@ -203,8 +213,8 @@ public class UIManager : MonoBehaviour
 
         winMessageText.text = $"{winnerName} Wins!";
 
-        player1TurnImage.SetActive(false);
-        player2TurnImage.SetActive(false);
+        SetCanvasGroupAlpha(player1CG,0.5f);
+        SetCanvasGroupAlpha(player2CG, 0.5f);
     }
 
     // COINS UI

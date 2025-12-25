@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6959262552223815521}
   - component: {fileID: 5568215948508934254}
   - component: {fileID: 5289860744258005297}
+  - component: {fileID: 3858515645903769582}
   m_Layer: 0
   m_Name: Magnet
   m_TagString: Untagged
@@ -124,10 +125,22 @@ MonoBehaviour:
   shakeDistance: 120
   dragShakeDuration: 0.15
   visualRoot: {fileID: 3313436141213274957}
-  dragOffset: {x: 0, y: 120, z: 0}
+  dragOffset: {x: 0, y: 180, z: 0}
   dragSmoothSpeed: 15
   highlightScaleUp: 1.15
   highlightDuration: 0.15
+--- !u!225 &3858515645903769582
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5557168319407752833}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8695990150550358679
 GameObject:
   m_ObjectHideFlags: 0
