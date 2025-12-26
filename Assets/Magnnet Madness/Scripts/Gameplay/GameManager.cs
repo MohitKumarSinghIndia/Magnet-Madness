@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,6 +16,11 @@ public class GameManager : MonoBehaviour
     [Header("Gameplay Settings")]
     public int initialMagnetCount = 5;
 
+    [Header("Turn Timer Settings")]
+    public float turnDuration = 30f;
+    private float currentTurnTime;
+    private bool isTimerRunning;
+
     [Header("Ad Settings")]
     private int gameOverCount = 0;
 
@@ -31,37 +35,43 @@ public class GameManager : MonoBehaviour
     public MagnetSpawner magnetSpawner;
 
     [Header("Players Magnets")]
-    [Space(10)]
     public int player1Magnets;
     public int player2Magnets;
 
-    [Space(10)]
     public int player1PlacedMagnets;
     public int player2PlacedMagnets;
 
     [Header("Current Player Turn")]
-    [Space(5)]
     public PlayerTurn currentTurn = PlayerTurn.Player1;
 
-    private List<Magnet> magnetsInCircle = new List<Magnet>();
-
+    private List<Magnet> magnetsInCircle = new();
     private bool isGameOver = false;
+
+    public Magnet activeDraggingMagnet;
 
     #endregion
 
-    #region Unity
+    #region Unity Lifecycle
 
     private void Awake()
     {
         if (Instance == null)
             Instance = this;
         else
+        {
             Destroy(gameObject);
+            return;
+        }
     }
 
     private void Start()
     {
         gameOverCount = 0;
+    }
+
+    private void Update()
+    {
+        HandleTurnTimer();
     }
 
     #endregion
@@ -90,8 +100,55 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.LoadGameplayPanel();
         UIManager.Instance.UpdateGameplayUI();
 
+        StartTurnTimer();
+
         if (GoogleAdsManager.Instance != null)
             GoogleAdsManager.Instance.ShowBanner();
+    }
+
+    #endregion
+
+    #region TURN TIMER
+
+    private void HandleTurnTimer()
+    {
+        if (!isTimerRunning || isGameOver) return;
+
+        currentTurnTime -= Time.deltaTime;
+        currentTurnTime = Mathf.Max(0f, currentTurnTime);
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.UpdateTurnTimer(currentTurnTime);
+
+        if (currentTurnTime <= 0f)
+        {
+            isTimerRunning = false;
+            OnTurnTimeOver();
+        }
+    }
+
+    private void StartTurnTimer()
+    {
+        currentTurnTime = turnDuration;
+        isTimerRunning = true;
+
+        if (UIManager.Instance != null)
+            UIManager.Instance.UpdateTurnTimer(currentTurnTime);
+    }
+    public void OnTurnTimeOver()
+    {
+        if (activeDraggingMagnet != null)
+        {
+            activeDraggingMagnet.ForceReturnToSlot();
+            activeDraggingMagnet = null;
+        }
+
+        SwitchTurn();
+    }
+
+    private void StopTurnTimer()
+    {
+        isTimerRunning = false;
     }
 
     #endregion
@@ -100,13 +157,13 @@ public class GameManager : MonoBehaviour
 
     public void SwitchTurn()
     {
-        if (isGameOver)
-            return;
+        if (isGameOver) return;
 
         currentTurn = currentTurn == PlayerTurn.Player1
             ? PlayerTurn.Player2
             : PlayerTurn.Player1;
 
+        StartTurnTimer();
         UIManager.Instance.UpdateGameplayUI();
     }
 
@@ -156,34 +213,34 @@ public class GameManager : MonoBehaviour
 
     public void CheckWinCondition()
     {
-        if (isGameOver)
-            return;
+        if (isGameOver) return;
 
         if (player1Magnets <= 0)
-        {
             HandleGameOver(GameCore.Instance.gameData.player1Name);
-        }
         else if (player2Magnets <= 0)
-        {
             HandleGameOver(GameCore.Instance.gameData.player2Name);
-        }
     }
 
     private void HandleGameOver(string winnerName)
     {
-        if (isGameOver)
-            return;
+        if (isGameOver) return;
 
         isGameOver = true;
+        StopTurnTimer();
 
         UIManager.Instance.ShowWin(winnerName);
         TryShowInterstitialOnGameOver();
     }
 
+    public bool IsGameOver() => isGameOver;
+
+    #endregion
+
+    #region Ads
+
     public void TryShowInterstitialOnGameOver()
     {
-        if (GoogleAdsManager.Instance == null)
-            return;
+        if (GoogleAdsManager.Instance == null) return;
 
         gameOverCount++;
 
@@ -193,11 +250,6 @@ public class GameManager : MonoBehaviour
             GoogleAdsManager.Instance.ShowInterstitial();
             gameOverCount = 0;
         }
-    }
-
-    public bool IsGameOver()
-    {
-        return isGameOver;
     }
 
     #endregion
@@ -216,14 +268,11 @@ public class GameManager : MonoBehaviour
             magnetsInCircle.Remove(magnet);
     }
 
-    public List<Magnet> GetMagnetsInCircle()
-    {
-        return magnetsInCircle;
-    }
+    public List<Magnet> GetMagnetsInCircle() => magnetsInCircle;
 
     #endregion
 
-    #region Restart Game
+    #region Restart / Main Menu
 
     public void OnRestartButtonClicked()
     {
@@ -237,13 +286,10 @@ public class GameManager : MonoBehaviour
         InitializeGame();
     }
 
-    #endregion
-
-    #region Main Menu
-
     public void ReturnToMainMenu()
     {
         gameOverCount = 0;
+        StopTurnTimer();
 
         foreach (Magnet magnet in new List<Magnet>(magnetsInCircle))
         {
@@ -252,7 +298,6 @@ public class GameManager : MonoBehaviour
         }
 
         magnetsInCircle.Clear();
-
         ClearHolder(player1MagnetHolder);
         ClearHolder(player2MagnetHolder);
     }

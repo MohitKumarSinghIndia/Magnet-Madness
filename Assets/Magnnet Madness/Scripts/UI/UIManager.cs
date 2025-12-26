@@ -30,6 +30,15 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI player2NameText;
     public TextMeshProUGUI player1CountText;
     public TextMeshProUGUI player2CountText;
+
+    [Header("Turn Timer UI")]
+    public TextMeshProUGUI turnTimerText;
+
+    [Header("Turn Timer Colors")]
+    public Color normalTimerColor = Color.white;
+    public Color warningTimerColor = Color.red;
+    public float warningTimeThreshold = 10f;
+
     private CanvasGroup player1CG;
     private CanvasGroup player2CG;
 
@@ -37,7 +46,7 @@ public class UIManager : MonoBehaviour
     public RectTransform player2Holder;
 
     [Header("Game Over UI")]
-    public RectTransform GameOverPanel;
+    public RectTransform gameOverPanel;
     public TextMeshProUGUI winMessageText;
     public Button restartButton;
     public Button homeButton;
@@ -45,9 +54,16 @@ public class UIManager : MonoBehaviour
     private bool isGameOver = false;
 
     #region Unity Methods
+
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     private void Start()
@@ -56,26 +72,21 @@ public class UIManager : MonoBehaviour
 
         player1CG = player1Holder.GetComponent<CanvasGroup>();
         player2CG = player2Holder.GetComponent<CanvasGroup>();
+
+        if (player1CG == null || player2CG == null)
+            Debug.LogError("CanvasGroup missing on player holders!");
     }
 
     private void OnEnable()
     {
-        restartButton.onClick.AddListener(() =>
-        {
-            GameManager.Instance.OnRestartButtonClicked();
-        });
-
-        homeButton.onClick.AddListener(() =>
-        {
-            GameManager.Instance.ReturnToMainMenu();
-            ShowMainMenuOnly();
-        });
+        restartButton.onClick.AddListener(OnRestartClicked);
+        homeButton.onClick.AddListener(OnHomeClicked);
     }
 
     private void OnDisable()
     {
-        restartButton.onClick.RemoveAllListeners();
-        homeButton.onClick.RemoveAllListeners();
+        restartButton.onClick.RemoveListener(OnRestartClicked);
+        homeButton.onClick.RemoveListener(OnHomeClicked);
     }
 
     #endregion
@@ -103,7 +114,6 @@ public class UIManager : MonoBehaviour
         menuButtonsPanel.SetActive(true);
 
         RefreshCoinsUI();
-
     }
 
     public void LoadGameplayPanel()
@@ -121,7 +131,6 @@ public class UIManager : MonoBehaviour
     {
         HideAllMenuSubPanels();
         target.SetActive(true);
-
         RefreshCoinsUI();
     }
 
@@ -129,14 +138,12 @@ public class UIManager : MonoBehaviour
     {
         HideAllMenuSubPanels();
         menuButtonsPanel.SetActive(true);
-
         RefreshCoinsUI();
     }
+
     #endregion
 
-    #region Functions
-
-    // START GAME
+    #region START GAME
 
     public void OnStartGameClicked()
     {
@@ -154,29 +161,37 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.InitializeGame();
     }
 
-    // GAMEPLAY UI
+    #endregion
+
+    #region GAMEPLAY UI
 
     public void InitializeGameplayUI()
     {
         isGameOver = false;
-        GameOverPanel.gameObject.SetActive(false);
+
+        gameOverPanel.gameObject.SetActive(false);
         winMessageText.text = "";
 
         player1NameText.text = GameCore.Instance.gameData.player1Name;
         player2NameText.text = GameCore.Instance.gameData.player2Name;
+
+        turnTimerText.color = normalTimerColor;
+        UpdateTurnTimer(GameManager.Instance.turnDuration);
 
         UpdateGameplayUI();
     }
 
     public void UpdateGameplayUI()
     {
-        player1CountText.text = $"{GameManager.Instance.player1Magnets}";
-        player2CountText.text = $"{GameManager.Instance.player2Magnets}";
+        player1CountText.text = GameManager.Instance.player1Magnets.ToString();
+        player2CountText.text = GameManager.Instance.player2Magnets.ToString();
 
         UpdateTurnIndicator(GameManager.Instance.currentTurn);
     }
 
-    // TURN INDICATOR
+    #endregion
+
+    #region TURN INDICATOR
 
     private void UpdateTurnIndicator(PlayerTurn turn)
     {
@@ -184,40 +199,59 @@ public class UIManager : MonoBehaviour
 
         bool isP1 = turn == PlayerTurn.Player1;
 
-        //player1TurnImage.SetActive(isP1);
-        //player2TurnImage.SetActive(!isP1);
-
         SetCanvasGroupAlpha(player1CG, isP1 ? 1f : 0.5f);
         SetCanvasGroupAlpha(player2CG, isP1 ? 0.5f : 1f);
 
         if (isP1) player1Holder.SetAsLastSibling();
         else player2Holder.SetAsLastSibling();
     }
-    private void SetCanvasGroupAlpha(CanvasGroup canvasGroup, float alpha)
+
+    private void SetCanvasGroupAlpha(CanvasGroup cg, float alpha)
     {
-        canvasGroup.alpha = alpha;
+        if (cg != null)
+            cg.alpha = alpha;
     }
 
-    // WIN PANEL
+    #endregion
+
+    #region TURN TIMER UI
+
+    public void UpdateTurnTimer(float time)
+    {
+        if (turnTimerText == null) return;
+
+        time = Mathf.Clamp(time, 0f, 999f);
+        turnTimerText.text = Mathf.CeilToInt(time) + "s";
+
+        if (time <= warningTimeThreshold)
+            turnTimerText.color = warningTimerColor;
+        else
+            turnTimerText.color = normalTimerColor;
+    }
+
+    #endregion
+
+    #region WIN PANEL
 
     public void ShowWin(string winnerName)
     {
         isGameOver = true;
 
-        // GIVE WIN COINS
         GameCore.Instance.gameData.AddCoins(50);
         RefreshCoinsUI();
 
-        GameOverPanel.gameObject.SetActive(true);
-        GameOverPanel.SetAsLastSibling();
+        gameOverPanel.gameObject.SetActive(true);
+        gameOverPanel.SetAsLastSibling();
 
         winMessageText.text = $"{winnerName} Wins!";
 
-        SetCanvasGroupAlpha(player1CG,0.5f);
+        SetCanvasGroupAlpha(player1CG, 0.5f);
         SetCanvasGroupAlpha(player2CG, 0.5f);
     }
 
-    // COINS UI
+    #endregion
+
+    #region COINS UI
 
     public void RefreshCoinsUI()
     {
@@ -230,9 +264,22 @@ public class UIManager : MonoBehaviour
         coinAmount = GameCore.Instance.gameData.GetCoins();
 
         if (coinsText != null)
-        {
             coinsText.text = coinAmount.ToString();
-        }
+    }
+
+    #endregion
+
+    #region BUTTON CALLBACKS
+
+    private void OnRestartClicked()
+    {
+        GameManager.Instance.OnRestartButtonClicked();
+    }
+
+    private void OnHomeClicked()
+    {
+        GameManager.Instance.ReturnToMainMenu();
+        ShowMainMenuOnly();
     }
 
     #endregion

@@ -106,6 +106,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
 
         isDragging = true;
 
+        GameManager.Instance.activeDraggingMagnet = this;
+
         if (waveEffect != null)
             waveEffect.SetActive(true);
 
@@ -138,6 +140,9 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (!isDragging) return;
 
         isDragging = false;
+
+        GameManager.Instance.activeDraggingMagnet = null;
+
         waveEffect.SetActive(false);
         StopAllDragShakes();
         transform.DOScale(1f, highlightDuration);
@@ -366,6 +371,20 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         KillTween();
         activeTween = rectTransform.DOMove(slot.position, 0.5f)
             .SetEase(Ease.OutCubic);
+    }
+
+    public void ForceReturnToSlot()
+    {
+        isDragging = false;
+        hasBeenDropped = false;
+        isInCircle = false;
+
+        waveEffect?.SetActive(false);
+        StopAllDragShakes();
+        KillTween();
+
+        transform.DOScale(1f, highlightDuration);
+        SmoothReturnToSlot();
     }
 
     void MagnetShake()
