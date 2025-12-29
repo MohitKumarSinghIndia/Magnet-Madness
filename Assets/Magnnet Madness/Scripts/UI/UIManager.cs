@@ -283,4 +283,15 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
+
+    public void ShowAdForCoins()
+    {
+        int coins = (int)Random.Range(5, 50);
+
+        GoogleAdsManager.Instance.ShowRewarded(() =>
+        {
+            GameCore.Instance.gameData.AddCoins(coins);
+            RefreshCoinsUI();
+        });
+    }
 }
