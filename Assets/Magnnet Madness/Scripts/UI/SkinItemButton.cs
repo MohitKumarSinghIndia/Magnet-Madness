@@ -6,6 +6,7 @@ public class SkinItemButton : MonoBehaviour
     public int skinIndex;
     public Image iconImage;
     public GameObject lockSprite;
+    public GameObject selectedSprite;
 
     private SkinSelectionPanel controller;
     private Button button;
@@ -13,6 +14,28 @@ public class SkinItemButton : MonoBehaviour
     private void Awake()
     {
         button = GetComponent<Button>();
+    }
+
+    public void Init(int index, Sprite icon, SkinSelectionPanel ui, bool unlocked, bool selected)
+    {
+        skinIndex = index;
+        controller = ui;
+
+        iconImage.sprite = icon;
+        lockSprite.SetActive(!unlocked);
+        selectedSprite.SetActive(selected);
+
+        button.interactable = true;
+    }
+
+    public void Unlock()
+    {
+        lockSprite.SetActive(false);
+    }
+
+    public void SetSelected(bool value)
+    {
+        selectedSprite.SetActive(value);
     }
 
     private void OnEnable()
@@ -23,22 +46,6 @@ public class SkinItemButton : MonoBehaviour
     private void OnDisable()
     {
         button.onClick.RemoveListener(OnClick);
-    }
-
-    public void Init(int index, Sprite icon, SkinSelectionPanel ui, bool unlocked)
-    {
-        skinIndex = index;
-        controller = ui;
-
-        iconImage.sprite = icon;
-        lockSprite.SetActive(!unlocked);
-
-        button.interactable = true;
-    }
-
-    public void Unlock()
-    {
-        lockSprite.SetActive(false);
     }
 
     private void OnClick()
