@@ -58,28 +58,60 @@ public class SettingsPanel : MonoBehaviour
         UpdateHandleColor(vibrationSlider.value, vibrationHandle);
     }
 
+    // SFX PLAY METHOD
+    private void PlayToggleSFX()
+    {
+        if (AudioManager.Instance != null &&
+            AudioManager.Instance.buttonClick != null &&
+            GameCore.Instance.gameData.sfxEnabled)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.toggleClick);
+        }
+    }
+
     void OnMusicChanged(float value)
     {
         bool enabled = value == 1;
+
         GameCore.Instance.gameData.musicEnabled = enabled;
         GameCore.Instance.gameData.Save();
+
+        AudioManager.Instance.ApplySettings();
+
+        if (enabled)
+            AudioManager.Instance.PlayMusic();
+        else
+            AudioManager.Instance.StopMusic();
+
         UpdateHandleColor(value, musicHandle);
+
+        PlayToggleSFX();
     }
 
     void OnSfxChanged(float value)
     {
         bool enabled = value == 1;
+
         GameCore.Instance.gameData.sfxEnabled = enabled;
         GameCore.Instance.gameData.Save();
+
+        AudioManager.Instance.ApplySettings();
+
         UpdateHandleColor(value, sfxHandle);
+
+        PlayToggleSFX();
     }
 
     void OnVibrationChanged(float value)
     {
         bool enabled = value == 1;
+
         GameCore.Instance.gameData.vibrationEnabled = enabled;
         GameCore.Instance.gameData.Save();
+
         UpdateHandleColor(value, vibrationHandle);
+
+        PlayToggleSFX();
     }
 
     private void UpdateHandleColor(float value, Image handle)

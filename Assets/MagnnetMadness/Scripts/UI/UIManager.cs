@@ -91,6 +91,14 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    // SIMPLE BUTTON SOUND METHOD
+    private void PlayButtonClickSound()
+    {
+        if (AudioManager.Instance != null && AudioManager.Instance.buttonClick != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
+        }
+    }
     #region PANEL NAVIGATION
 
     private void HideAllMenuSubPanels()
@@ -122,11 +130,33 @@ public class UIManager : MonoBehaviour
         gameplayPanel.SetActive(true);
     }
 
-    public void OnPlayClicked() => ShowPanel(playerNamePanel);
-    public void OnSettingsButtonClicked() => ShowPanel(settingsPanel);
-    public void OnHomeButtonClicked() => ShowMainMenuOnly();
-    public void OnShopButtonClicked() => ShowPanel(shopPanel);
-    public void OnAboutClicked() => ShowPanel(aboutPanel);
+    public void OnPlayClicked()
+    {
+        PlayButtonClickSound();
+        ShowPanel(playerNamePanel);
+    }
+    public void OnSettingsButtonClicked()
+    {
+        PlayButtonClickSound();
+        ShowPanel(settingsPanel);
+    }
+    public void OnHomeButtonClicked()
+    {
+        PlayButtonClickSound();
+        ShowMainMenuOnly();
+    }
+
+    public void OnShopButtonClicked()
+    {
+        PlayButtonClickSound();
+        ShowPanel(shopPanel);
+    }
+
+    public void OnAboutClicked()
+    {
+        PlayButtonClickSound();
+        ShowPanel(aboutPanel);
+    }
 
     private void ShowPanel(GameObject target)
     {
@@ -137,6 +167,7 @@ public class UIManager : MonoBehaviour
 
     public void OnBackToMainMenu()
     {
+        PlayButtonClickSound();
         HideAllMenuSubPanels();
         homePanel.SetActive(true);
         RefreshCoinsUI();
@@ -148,6 +179,8 @@ public class UIManager : MonoBehaviour
 
     public void OnStartGameClicked()
     {
+        PlayButtonClickSound();
+
         if (string.IsNullOrWhiteSpace(player1Input.text) ||
             string.IsNullOrWhiteSpace(player2Input.text))
         {
@@ -275,12 +308,14 @@ public class UIManager : MonoBehaviour
     private void OnRestartClicked()
     {
         GameManager.Instance.OnRestartButtonClicked();
+        PlayButtonClickSound();
     }
 
     private void OnHomeClicked()
     {
         GameManager.Instance.ReturnToMainMenu();
         ShowMainMenuOnly();
+        PlayButtonClickSound();
     }
 
     #endregion
