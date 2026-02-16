@@ -11,10 +11,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject gameplayPanel;
 
     [Header("Menu Panels")]
-    public GameObject menuButtonsPanel;
-    public GameObject playerNamePanel;
+    public GameObject homePanel;
     public GameObject settingsPanel;
-    public GameObject skinSelectionPanel;
+    public GameObject shopPanel;
+    public GameObject playerNamePanel;
     public GameObject aboutPanel;
 
     [Header("Player Input Fields")]
@@ -95,10 +95,10 @@ public class UIManager : MonoBehaviour
 
     private void HideAllMenuSubPanels()
     {
-        menuButtonsPanel.SetActive(false);
+        homePanel.SetActive(false);
         playerNamePanel.SetActive(false);
         settingsPanel.SetActive(false);
-        skinSelectionPanel.SetActive(false);
+        shopPanel.SetActive(false);
         aboutPanel.SetActive(false);
     }
 
@@ -111,7 +111,7 @@ public class UIManager : MonoBehaviour
         player2Input.text = string.Empty;
 
         HideAllMenuSubPanels();
-        menuButtonsPanel.SetActive(true);
+        homePanel.SetActive(true);
 
         RefreshCoinsUI();
     }
@@ -123,8 +123,9 @@ public class UIManager : MonoBehaviour
     }
 
     public void OnPlayClicked() => ShowPanel(playerNamePanel);
-    public void OnSettingsClicked() => ShowPanel(settingsPanel);
-    public void OnSkinSelectClicked() => ShowPanel(skinSelectionPanel);
+    public void OnSettingsButtonClicked() => ShowPanel(settingsPanel);
+    public void OnHomeButtonClicked() => ShowMainMenuOnly();
+    public void OnShopButtonClicked() => ShowPanel(shopPanel);
     public void OnAboutClicked() => ShowPanel(aboutPanel);
 
     private void ShowPanel(GameObject target)
@@ -137,7 +138,7 @@ public class UIManager : MonoBehaviour
     public void OnBackToMainMenu()
     {
         HideAllMenuSubPanels();
-        menuButtonsPanel.SetActive(true);
+        homePanel.SetActive(true);
         RefreshCoinsUI();
     }
 

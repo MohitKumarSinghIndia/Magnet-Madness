@@ -82,10 +82,4 @@ public class SkinSelectionPanel : MonoBehaviour
 
         Debug.Log($"Applied skin {selectedSkinIndex}");
     }
-
-    // APPLY BUTTON
-    public void ApplySkin()
-    {
-
-    }
 }
