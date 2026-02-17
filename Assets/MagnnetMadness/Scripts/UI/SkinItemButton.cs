@@ -1,14 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class SkinItemButton : MonoBehaviour
 {
+    [Header("Basic")]
     public int skinIndex;
     public Image iconImage;
     public GameObject lockSprite;
     public GameObject selectedSprite;
 
-    private SkinSelectionPanel controller;
+    [Header("Price UI")]
+    public GameObject priceRoot;
+    public TextMeshProUGUI priceText;
+
+    private ShopPanel controller;
     private Button button;
 
     private void Awake()
@@ -16,13 +22,23 @@ public class SkinItemButton : MonoBehaviour
         button = GetComponent<Button>();
     }
 
-    public void Init(int index, Sprite icon, SkinSelectionPanel ui, bool unlocked, bool selected)
+    public void Init(
+        int index,
+        Sprite icon,
+        ShopPanel ui,
+        bool unlocked,
+        bool selected,
+        int price)
     {
         skinIndex = index;
         controller = ui;
 
         iconImage.sprite = icon;
+
         lockSprite.SetActive(!unlocked);
+        priceRoot.SetActive(!unlocked);
+        priceText.text = price.ToString();
+
         selectedSprite.SetActive(selected);
 
         button.interactable = true;
@@ -31,6 +47,7 @@ public class SkinItemButton : MonoBehaviour
     public void Unlock()
     {
         lockSprite.SetActive(false);
+        priceRoot.SetActive(false);
     }
 
     public void SetSelected(bool value)
