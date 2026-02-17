@@ -8,7 +8,8 @@ public class SkinItemButton : MonoBehaviour
     public int skinIndex;
     public Image iconImage;
     public GameObject lockSprite;
-    public GameObject selectedSprite;
+    public GameObject selectedWave;
+    public GameObject selectedUI;
 
     [Header("Price UI")]
     public GameObject priceRoot;
@@ -39,7 +40,8 @@ public class SkinItemButton : MonoBehaviour
         priceRoot.SetActive(!unlocked);
         priceText.text = price.ToString();
 
-        selectedSprite.SetActive(selected);
+        selectedWave.SetActive(selected);
+        selectedUI.SetActive(selected);
 
         button.interactable = true;
     }
@@ -52,7 +54,8 @@ public class SkinItemButton : MonoBehaviour
 
     public void SetSelected(bool value)
     {
-        selectedSprite.SetActive(value);
+        selectedWave.SetActive(value);
+        selectedUI.SetActive(value);
     }
 
     private void OnEnable()
