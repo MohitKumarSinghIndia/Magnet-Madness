@@ -60,7 +60,6 @@ public class ShopPanel : MonoBehaviour
         selectedSkinIndex = GameCore.Instance.gameData.selectedMagnetSkin;
         HidePanels();
         LoadGrid();
-        GameCore.Instance.gameData.AddCoins(1000);
     }
 
     private void OnDisable()
