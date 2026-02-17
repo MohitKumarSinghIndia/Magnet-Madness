@@ -16,6 +16,8 @@ public class SettingsPanel : MonoBehaviour
     private Color onColor = Color.green;
     private Color offColor = Color.red;
 
+    private bool isLoadingSettings = false;
+
     void OnEnable()
     {
         musicSlider.onValueChanged.AddListener(OnMusicChanged);
@@ -49,6 +51,8 @@ public class SettingsPanel : MonoBehaviour
 
     private void LoadSettings()
     {
+        isLoadingSettings = true;
+
         musicSlider.value = GameCore.Instance.gameData.musicEnabled ? 1 : 0;
         sfxSlider.value = GameCore.Instance.gameData.sfxEnabled ? 1 : 0;
         vibrationSlider.value = GameCore.Instance.gameData.vibrationEnabled ? 1 : 0;
@@ -56,13 +60,16 @@ public class SettingsPanel : MonoBehaviour
         UpdateHandleColor(musicSlider.value, musicHandle);
         UpdateHandleColor(sfxSlider.value, sfxHandle);
         UpdateHandleColor(vibrationSlider.value, vibrationHandle);
+
+        isLoadingSettings = false;
     }
 
-    // SFX PLAY METHOD
     private void PlayToggleSFX()
     {
+        if (isLoadingSettings) return;
+
         if (AudioManager.Instance != null &&
-            AudioManager.Instance.buttonClick != null &&
+            AudioManager.Instance.toggleClick != null &&
             GameCore.Instance.gameData.sfxEnabled)
         {
             AudioManager.Instance.PlaySFX(AudioManager.Instance.toggleClick);

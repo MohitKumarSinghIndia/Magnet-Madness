@@ -1,10 +1,14 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+
+    #region VARIABLES
 
     [Header("Main Containers")]
     [SerializeField] private GameObject mainMenuPanel;
@@ -16,6 +20,13 @@ public class UIManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject playerNamePanel;
     public GameObject aboutPanel;
+
+    [Header("Transition Settings")]
+    public float panelAnimDuration = 0.35f;
+
+    [Header("Home Panel Bounce Targets")]
+    public RectTransform logoTransform;
+    public RectTransform playButtonTransform;
 
     [Header("Player Input Fields")]
     public TMP_InputField player1Input;
@@ -39,9 +50,6 @@ public class UIManager : MonoBehaviour
     public Color warningTimerColor = Color.red;
     public float warningTimeThreshold = 10f;
 
-    private CanvasGroup player1CG;
-    private CanvasGroup player2CG;
-
     public RectTransform player1Holder;
     public RectTransform player2Holder;
 
@@ -51,9 +59,17 @@ public class UIManager : MonoBehaviour
     public Button restartButton;
     public Button homeButton;
 
-    private bool isGameOver = false;
+    private CanvasGroup player1CG;
+    private CanvasGroup player2CG;
 
-    #region Unity Methods
+    private bool isGameOver = false;
+    private bool isPanelAnimating = false;
+    private Sequence logoBounceSeq;
+    private Tween playButtonTween;
+
+    #endregion
+
+    #region UNITY METHODS
 
     private void Awake()
     {
@@ -91,23 +107,116 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    // SIMPLE BUTTON SOUND METHOD
-    private void PlayButtonClickSound()
+    #region HOME BOUNCE SYSTEM
+
+    private void StartHomeAnimation()
     {
-        if (AudioManager.Instance != null && AudioManager.Instance.buttonClick != null)
-        {
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
-        }
+        LoopLogoBounce(logoTransform);
+
+        PlayButtonPulse(playButtonTransform);
     }
+
+    private void StopHomeAnimation()
+    {
+        if (logoBounceSeq != null)
+            logoBounceSeq.Kill();
+
+        if (playButtonTween != null)
+            playButtonTween.Kill();
+
+        if (logoTransform != null)
+            logoTransform.localScale = Vector3.one;
+
+        if (playButtonTransform != null)
+            playButtonTransform.localScale = Vector3.one;
+    }
+
+    private void LoopLogoBounce(RectTransform target)
+    {
+        if (target == null) return;
+
+        if (logoBounceSeq != null && logoBounceSeq.IsActive())
+            logoBounceSeq.Kill();
+
+        target.localScale = Vector3.one;
+
+        logoBounceSeq = DOTween.Sequence();
+
+        logoBounceSeq.Append(target.DOScale(1.15f, 0.5f).SetEase(Ease.OutQuad));
+        logoBounceSeq.Append(target.DOScale(1f, 0.5f).SetEase(Ease.OutElastic));
+    }
+
+    private void PlayButtonPulse(RectTransform target)
+    {
+        if (target == null) return;
+
+        if (playButtonTween != null && playButtonTween.IsActive())
+            playButtonTween.Kill();
+
+        target.localScale = Vector3.one;
+
+        playButtonTween = target.DOScale(1.05f, 2.5f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    #endregion
+
     #region PANEL NAVIGATION
+
+    private void AnimatePanelOpen(GameObject panel)
+    {
+        isPanelAnimating = false;
+
+        panel.SetActive(true);
+
+        CanvasGroup cg = panel.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = panel.AddComponent<CanvasGroup>();
+
+        panel.transform.DOKill(true);
+        cg.DOKill(true);
+
+        panel.transform.localScale = Vector3.zero;
+        cg.alpha = 0f;
+
+        isPanelAnimating = true;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(panel.transform
+            .DOScale(Vector3.one, panelAnimDuration)
+            .SetEase(Ease.OutBack)
+            .SetUpdate(true));
+
+        seq.Join(cg
+            .DOFade(1f, panelAnimDuration)
+            .SetUpdate(true));
+
+        seq.OnComplete(() =>
+        {
+            isPanelAnimating = false;
+        });
+
+        if (panel == homePanel)
+            StartHomeAnimation();
+    }
 
     private void HideAllMenuSubPanels()
     {
+        StopHomeAnimation();
+
         homePanel.SetActive(false);
         playerNamePanel.SetActive(false);
         settingsPanel.SetActive(false);
         shopPanel.SetActive(false);
         aboutPanel.SetActive(false);
+    }
+
+    private void ShowPanel(GameObject target)
+    {
+        HideAllMenuSubPanels();
+        AnimatePanelOpen(target);
+        RefreshCoinsUI();
     }
 
     public void ShowMainMenuOnly()
@@ -119,7 +228,7 @@ public class UIManager : MonoBehaviour
         player2Input.text = string.Empty;
 
         HideAllMenuSubPanels();
-        homePanel.SetActive(true);
+        AnimatePanelOpen(homePanel);
 
         RefreshCoinsUI();
     }
@@ -135,11 +244,13 @@ public class UIManager : MonoBehaviour
         PlayButtonClickSound();
         ShowPanel(playerNamePanel);
     }
+
     public void OnSettingsButtonClicked()
     {
         PlayButtonClickSound();
         ShowPanel(settingsPanel);
     }
+
     public void OnHomeButtonClicked()
     {
         PlayButtonClickSound();
@@ -158,18 +269,11 @@ public class UIManager : MonoBehaviour
         ShowPanel(aboutPanel);
     }
 
-    private void ShowPanel(GameObject target)
-    {
-        HideAllMenuSubPanels();
-        target.SetActive(true);
-        RefreshCoinsUI();
-    }
-
     public void OnBackToMainMenu()
     {
         PlayButtonClickSound();
         HideAllMenuSubPanels();
-        homePanel.SetActive(true);
+        AnimatePanelOpen(homePanel);
         RefreshCoinsUI();
     }
 
@@ -275,6 +379,8 @@ public class UIManager : MonoBehaviour
         RefreshCoinsUI();
 
         gameOverPanel.gameObject.SetActive(true);
+        gameOverPanel.localScale = Vector3.zero;
+        gameOverPanel.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
         gameOverPanel.SetAsLastSibling();
 
         winMessageText.text = $"{winnerName} Wins!";
@@ -318,7 +424,17 @@ public class UIManager : MonoBehaviour
         PlayButtonClickSound();
     }
 
+    private void PlayButtonClickSound()
+    {
+        if (AudioManager.Instance != null && AudioManager.Instance.buttonClick != null)
+        {
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
+        }
+    }
+
     #endregion
+
+    #region ADS
 
     public void ShowAdForCoins()
     {
@@ -330,4 +446,6 @@ public class UIManager : MonoBehaviour
             RefreshCoinsUI();
         });
     }
+
+    #endregion
 }
