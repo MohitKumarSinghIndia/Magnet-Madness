@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
+using UnityEngine.Events;
+using static UnityEngine.GraphicsBuffer;
 
 public class UIManager : MonoBehaviour
 {
@@ -46,8 +48,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI turnTimerText;
 
     [Header("Turn Timer Colors")]
-    public Color normalTimerColor = Color.white;
-    public Color warningTimerColor = Color.red;
+    private Color normalTimerColor = Color.white;
+    private Color warningTimerColor = Color.red;
     public float warningTimeThreshold = 10f;
 
     public RectTransform player1Holder;
@@ -58,6 +60,13 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI winMessageText;
     public Button restartButton;
     public Button homeButton;
+
+    [Header("Pause Panel")]
+    public GameObject pausePanel;
+    public Button pauseButton;
+    public Button resumeButton;
+
+    private bool isPaused = false;
 
     private CanvasGroup player1CG;
     private CanvasGroup player2CG;
@@ -97,12 +106,26 @@ public class UIManager : MonoBehaviour
     {
         restartButton.onClick.AddListener(OnRestartClicked);
         homeButton.onClick.AddListener(OnHomeClicked);
+
+        if (pauseButton != null)
+            pauseButton.onClick.AddListener(OnPauseClicked);
+
+        if (resumeButton != null)
+            resumeButton.onClick.AddListener(OnResumeClicked);
+
     }
 
     private void OnDisable()
     {
         restartButton.onClick.RemoveListener(OnRestartClicked);
         homeButton.onClick.RemoveListener(OnHomeClicked);
+
+        if (pauseButton != null)
+            pauseButton.onClick.RemoveListener(OnPauseClicked);
+
+        if (resumeButton != null)
+            resumeButton.onClick.RemoveListener(OnResumeClicked);
+
     }
 
     #endregion
@@ -164,7 +187,7 @@ public class UIManager : MonoBehaviour
 
     #region PANEL NAVIGATION
 
-    private void AnimatePanelOpen(GameObject panel)
+    private void AnimatePanelOpen(GameObject panel, UnityAction onCompleteEvent = null)
     {
         isPanelAnimating = false;
 
@@ -195,6 +218,7 @@ public class UIManager : MonoBehaviour
         seq.OnComplete(() =>
         {
             isPanelAnimating = false;
+            onCompleteEvent?.Invoke();
         });
 
         if (panel == homePanel)
@@ -209,7 +233,8 @@ public class UIManager : MonoBehaviour
         playerNamePanel.SetActive(false);
         settingsPanel.SetActive(false);
         shopPanel.SetActive(false);
-        aboutPanel.SetActive(false);
+        aboutPanel.SetActive(false); 
+        pausePanel.SetActive(false);
     }
 
     private void ShowPanel(GameObject target)
@@ -243,6 +268,9 @@ public class UIManager : MonoBehaviour
     {
         PlayButtonClickSound();
         ShowPanel(playerNamePanel);
+
+        player1Input.text = "Player 1";
+        player2Input.text = "Player 2";
     }
 
     public void OnSettingsButtonClicked()
@@ -383,10 +411,37 @@ public class UIManager : MonoBehaviour
         gameOverPanel.DOScale(1f, 0.4f).SetEase(Ease.OutBack);
         gameOverPanel.SetAsLastSibling();
 
-        winMessageText.text = $"{winnerName} Wins!";
+        winMessageText.text = $"<size=200>{winnerName}</size>\nWins!";
 
         SetCanvasGroupAlpha(player1CG, 0.5f);
         SetCanvasGroupAlpha(player2CG, 0.5f);
+    }
+
+    #endregion
+
+    #region PAUSE PANEL
+    private void OnPauseClicked()
+    {
+        if (isPaused || GameManager.Instance.IsGameOver()) return;
+
+        isPaused = true;
+
+        HideAllMenuSubPanels();
+        AnimatePanelOpen(pausePanel, () => { Time.timeScale = 0f; });
+
+        PlayButtonClickSound();
+    }
+
+    private void OnResumeClicked()
+    {
+        if (!isPaused) return;
+
+        isPaused = false;
+        Time.timeScale = 1f;
+
+        pausePanel.SetActive(false);
+
+        PlayButtonClickSound();
     }
 
     #endregion
