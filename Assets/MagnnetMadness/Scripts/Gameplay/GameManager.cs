@@ -11,22 +11,22 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    #region Gameplay Settings
+    #region VARIABLES
 
-    [Header("Gameplay Settings")]
-    public int initialMagnetCount = 5;
-
-    [Header("Turn Timer Settings")]
-    public float turnDuration = 30f;
-    private float currentTurnTime;
-    private bool isTimerRunning;
-
-    [Header("Ad Settings")]
-    private int gameOverCount = 0;
-
-    [Header("Player Magnet Holders")]
+    [Header("Players Magnet Holders")]
     public Transform player1MagnetHolder;
     public Transform player2MagnetHolder;
+
+    [Header("Players Magnets")]
+    public int player1Magnets;
+    public int player2Magnets;
+    [Space(10)]
+    public int player1PlacedMagnets;
+    public int player2PlacedMagnets;
+
+    [Header("Current Player Turn")]
+    public PlayerTurn currentTurn = PlayerTurn.Player1;
+    public Magnet activeDraggingMagnet;
 
     [Header("Circle Area")]
     public CircleCollider2D circleAreaCollider;
@@ -34,20 +34,18 @@ public class GameManager : MonoBehaviour
     [Header("Spawner")]
     public MagnetSpawner magnetSpawner;
 
-    [Header("Players Magnets")]
-    public int player1Magnets;
-    public int player2Magnets;
+    [Header("Gameplay Settings")]
+    public int initialMagnetCount = 5;
+    public float turnDuration = 30f;
 
-    public int player1PlacedMagnets;
-    public int player2PlacedMagnets;
+    [Header("Ad Settings")]
+    private int gameOverCount = 0;
 
-    [Header("Current Player Turn")]
-    public PlayerTurn currentTurn = PlayerTurn.Player1;
-
+    [Header("Private Fields")]
     private List<Magnet> magnetsInCircle = new();
     private bool isGameOver = false;
-
-    public Magnet activeDraggingMagnet;
+    private float currentTurnTime;
+    private bool isTimerRunning;
 
     #endregion
 

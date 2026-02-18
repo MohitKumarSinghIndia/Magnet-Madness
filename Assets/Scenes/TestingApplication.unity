@@ -11177,7 +11177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3844cc4c814b7c1438047cf0f7736a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  initialMagnetCount: 5
+  initialMagnetCount: 2
   turnDuration: 30
   player1MagnetHolder: {fileID: 1343807523}
   player2MagnetHolder: {fileID: 659813753}
@@ -11746,7 +11746,7 @@ MonoBehaviour:
   warningTimeThreshold: 10
   player1Holder: {fileID: 377115106}
   player2Holder: {fileID: 1490700436}
-  gameOverPanel: {fileID: 761568030}
+  gameOverPanel: {fileID: 761568029}
   winMessageText: {fileID: 1114013214}
   restartButton: {fileID: 1165015397}
   homeButton: {fileID: 1245671579}
