@@ -57,22 +57,23 @@ public class UIManager : MonoBehaviour
 
     [Header("Game Over UI")]
     public GameObject gameOverPanel;
-    public Button homeButton;
     public Button restartButton;
+    public Button gameOverPanelHomeButton;
     public TextMeshProUGUI winMessageText;
 
     [Header("Pause Panel")]
     public GameObject pausePanel;
     public Button pauseButton;
     public Button resumeButton;
+    public Button pausePanelHomeButton;
 
+    [Header("Private Fields")]
+    private bool isGameOver = false;
     private bool isPaused = false;
+    private bool isPanelAnimating = false;
 
     private CanvasGroup player1CG;
     private CanvasGroup player2CG;
-
-    private bool isGameOver = false;
-    private bool isPanelAnimating = false;
     private Sequence logoBounceSeq;
     private Tween playButtonTween;
 
@@ -104,28 +105,28 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        restartButton.onClick.AddListener(OnRestartClicked);
-        homeButton.onClick.AddListener(OnHomeClicked);
+        if (gameOverPanel != null)
+        {
+            restartButton.onClick.AddListener(OnRestartClicked);
+            gameOverPanelHomeButton.onClick.AddListener(OnHomeClicked);
+        }
 
-        if (pauseButton != null)
+        if (pausePanel != null)
+        {
             pauseButton.onClick.AddListener(OnPauseClicked);
-
-        if (resumeButton != null)
             resumeButton.onClick.AddListener(OnResumeClicked);
-
+            pausePanelHomeButton.onClick.AddListener(OnPausePanelHomeClicked);
+        }
     }
 
     private void OnDisable()
     {
         restartButton.onClick.RemoveListener(OnRestartClicked);
-        homeButton.onClick.RemoveListener(OnHomeClicked);
+        gameOverPanelHomeButton.onClick.RemoveListener(OnHomeClicked);
 
-        if (pauseButton != null)
-            pauseButton.onClick.RemoveListener(OnPauseClicked);
-
-        if (resumeButton != null)
-            resumeButton.onClick.RemoveListener(OnResumeClicked);
-
+        pauseButton.onClick.RemoveListener(OnPauseClicked);
+        resumeButton.onClick.RemoveListener(OnResumeClicked);
+        pausePanelHomeButton.onClick.RemoveListener(OnPausePanelHomeClicked);
     }
 
     #endregion
@@ -280,6 +281,7 @@ public class UIManager : MonoBehaviour
     public void InitializeGameplayUI()
     {
         isGameOver = false;
+        isPaused = false;
 
         gameOverPanel.SetActive(false);
         winMessageText.text = "";
@@ -353,6 +355,14 @@ public class UIManager : MonoBehaviour
         PlayButtonClickSound();
     }
 
+    private void OnPausePanelHomeClicked()
+    {
+        Time.timeScale = 1f;
+        GameManager.Instance.ReturnToMainMenu();
+        PlayButtonClickSound();
+        ShowMainMenuOnly();
+    }
+
     #endregion
 
     #region TURN SYSTEM
@@ -391,7 +401,7 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region HOME UI BOUNCE SYSTEM
+    #region HOME BOUNCE SYSTEM
 
     private void StartHomeAnimation()
     {
