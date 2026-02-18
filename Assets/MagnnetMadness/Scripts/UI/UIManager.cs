@@ -361,7 +361,6 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region TURN SYSTEM
-
     private void UpdateTurnIndicator(PlayerTurn turn)
     {
         if (isGameOver) return;

@@ -202,7 +202,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         StopAllDragShakes();
 
         MagnetShake();
-        HapticManager.VibrateMedium();
 
         foreach (var m in hitMagnets)
             m.MagnetShake();
@@ -393,6 +392,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         activeTween = visualRoot.DOShakePosition(
             0.5f, 10f, 20, 90, false, true
         );
+
+        CameraShakeManager.Instance.ShakeCamera(0.2f, 40f, true);
     }
 
     void KillTween()
