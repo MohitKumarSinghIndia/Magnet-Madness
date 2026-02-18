@@ -393,7 +393,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
             0.5f, 10f, 20, 90, false, true
         );
 
-        CameraShakeManager.Instance.ShakeCamera(0.2f, 40f, true);
+        CameraShakeManager.Instance.ShakeCamera(0.2f, 20f, true);
     }
 
     void KillTween()

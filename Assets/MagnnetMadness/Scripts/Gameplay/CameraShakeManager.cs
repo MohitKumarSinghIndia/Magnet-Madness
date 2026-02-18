@@ -6,9 +6,9 @@ public class CameraShakeManager : MonoBehaviour
     public static CameraShakeManager Instance;
 
     [Header("Shake Settings")]
-    public RectTransform shakeRect;   // Drag Gameplay Panel here
+    public RectTransform shakeRect;
     public float defaultDuration = 0.25f;
-    public float defaultStrength = 30f; // UI needs higher value
+    public float defaultStrength = 30f;
     public int vibrato = 20;
     public float randomness = 90f;
 
