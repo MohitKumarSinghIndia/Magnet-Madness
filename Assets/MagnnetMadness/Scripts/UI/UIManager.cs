@@ -33,7 +33,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI coinsText;
 
     [Header("Bounce Targets")]
-    public RectTransform logoTransform;
     public RectTransform playButtonTransform;
 
     [Header("Transition Settings")]
@@ -46,8 +45,6 @@ public class UIManager : MonoBehaviour
     public RectTransform player2Holder;
     public TextMeshProUGUI player1NameText;
     public TextMeshProUGUI player2NameText;
-    public TextMeshProUGUI player1CountText;
-    public TextMeshProUGUI player2CountText;
 
     [Header("Timer UI")]
     public float warningTimeThreshold = 10f;
@@ -74,7 +71,6 @@ public class UIManager : MonoBehaviour
 
     private CanvasGroup player1CG;
     private CanvasGroup player2CG;
-    private Sequence logoBounceSeq;
     private Tween playButtonTween;
 
     #endregion
@@ -297,9 +293,6 @@ public class UIManager : MonoBehaviour
 
     public void UpdateGameplayUI()
     {
-        player1CountText.text = GameManager.Instance.player1Magnets.ToString();
-        player2CountText.text = GameManager.Instance.player2Magnets.ToString();
-
         UpdateTurnIndicator(GameManager.Instance.currentTurn);
     }
 
@@ -401,43 +394,20 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region HOME BOUNCE SYSTEM
+    #region HOME BUTTON ANIMANTON
 
     private void StartHomeAnimation()
     {
-        LoopLogoBounce(logoTransform);
-
         PlayButtonPulse(playButtonTransform);
     }
 
     private void StopHomeAnimation()
     {
-        if (logoBounceSeq != null)
-            logoBounceSeq.Kill();
-
         if (playButtonTween != null)
             playButtonTween.Kill();
 
-        if (logoTransform != null)
-            logoTransform.localScale = Vector3.one;
-
         if (playButtonTransform != null)
             playButtonTransform.localScale = Vector3.one;
-    }
-
-    private void LoopLogoBounce(RectTransform target)
-    {
-        if (target == null) return;
-
-        if (logoBounceSeq != null && logoBounceSeq.IsActive())
-            logoBounceSeq.Kill();
-
-        target.localScale = Vector3.one;
-
-        logoBounceSeq = DOTween.Sequence();
-
-        logoBounceSeq.Append(target.DOScale(1.15f, 0.5f).SetEase(Ease.OutQuad));
-        logoBounceSeq.Append(target.DOScale(1f, 0.5f).SetEase(Ease.OutElastic));
     }
 
     private void PlayButtonPulse(RectTransform target)
