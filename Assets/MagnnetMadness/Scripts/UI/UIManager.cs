@@ -302,8 +302,10 @@ public class UIManager : MonoBehaviour
 
         GameCore.Instance.gameData.AddCoins(50);
         RefreshCoinsUI();
-
-        winMessageText.text = $"<size=200>{winnerName}</size>\nWins!";
+        winMessageText.text =
+            $"<size=120>VICTORY !</size>\n\n" +
+           $"<size=100><color=#FF5700>{winnerName}</color></size>\n\n" +
+            $"Reward <color=#FFD700>+50 Coins</color>";
 
         AnimatePanelOpen(gameOverPanel);
 

@@ -3,63 +3,36 @@ using UnityEngine.UI;
 
 public class SettingsPanel : MonoBehaviour
 {
-    [Header("Sliders")]
-    public Slider musicSlider;
-    public Slider sfxSlider;
-    public Slider vibrationSlider;
-
-    [Header("Handle Images")]
-    public Image musicHandle;
-    public Image sfxHandle;
-    public Image vibrationHandle;
-
-    private Color onColor = Color.green;
-    private Color offColor = Color.red;
+    [Header("Toggles")]
+    public Toggle musicToggle;
+    public Toggle sfxToggle;
+    public Toggle vibrationToggle;
 
     private bool isLoadingSettings = false;
 
     void OnEnable()
     {
-        musicSlider.onValueChanged.AddListener(OnMusicChanged);
-        sfxSlider.onValueChanged.AddListener(OnSfxChanged);
-        vibrationSlider.onValueChanged.AddListener(OnVibrationChanged);
+        musicToggle.onValueChanged.AddListener(OnMusicChanged);
+        sfxToggle.onValueChanged.AddListener(OnSfxChanged);
+        vibrationToggle.onValueChanged.AddListener(OnVibrationChanged);
 
-        SetupSliders();
         LoadSettings();
     }
 
     void OnDisable()
     {
-        musicSlider.onValueChanged.RemoveListener(OnMusicChanged);
-        sfxSlider.onValueChanged.RemoveListener(OnSfxChanged);
-        vibrationSlider.onValueChanged.RemoveListener(OnVibrationChanged);
-    }
-
-    private void SetupSliders()
-    {
-        SetupSlider(musicSlider);
-        SetupSlider(sfxSlider);
-        SetupSlider(vibrationSlider);
-    }
-
-    private void SetupSlider(Slider slider)
-    {
-        slider.minValue = 0;
-        slider.maxValue = 1;
-        slider.wholeNumbers = true;
+        musicToggle.onValueChanged.RemoveListener(OnMusicChanged);
+        sfxToggle.onValueChanged.RemoveListener(OnSfxChanged);
+        vibrationToggle.onValueChanged.RemoveListener(OnVibrationChanged);
     }
 
     private void LoadSettings()
     {
         isLoadingSettings = true;
 
-        musicSlider.value = GameCore.Instance.gameData.musicEnabled ? 1 : 0;
-        sfxSlider.value = GameCore.Instance.gameData.sfxEnabled ? 1 : 0;
-        vibrationSlider.value = GameCore.Instance.gameData.vibrationEnabled ? 1 : 0;
-
-        UpdateHandleColor(musicSlider.value, musicHandle);
-        UpdateHandleColor(sfxSlider.value, sfxHandle);
-        UpdateHandleColor(vibrationSlider.value, vibrationHandle);
+        musicToggle.isOn = GameCore.Instance.gameData.musicEnabled;
+        sfxToggle.isOn = GameCore.Instance.gameData.sfxEnabled;
+        vibrationToggle.isOn = GameCore.Instance.gameData.vibrationEnabled;
 
         isLoadingSettings = false;
     }
@@ -76,10 +49,8 @@ public class SettingsPanel : MonoBehaviour
         }
     }
 
-    void OnMusicChanged(float value)
+    void OnMusicChanged(bool enabled)
     {
-        bool enabled = value == 1;
-
         GameCore.Instance.gameData.musicEnabled = enabled;
         GameCore.Instance.gameData.Save();
 
@@ -90,39 +61,24 @@ public class SettingsPanel : MonoBehaviour
         else
             AudioManager.Instance.StopMusic();
 
-        UpdateHandleColor(value, musicHandle);
-
         PlayToggleSFX();
     }
 
-    void OnSfxChanged(float value)
+    void OnSfxChanged(bool enabled)
     {
-        bool enabled = value == 1;
-
         GameCore.Instance.gameData.sfxEnabled = enabled;
         GameCore.Instance.gameData.Save();
 
         AudioManager.Instance.ApplySettings();
 
-        UpdateHandleColor(value, sfxHandle);
-
         PlayToggleSFX();
     }
 
-    void OnVibrationChanged(float value)
+    void OnVibrationChanged(bool enabled)
     {
-        bool enabled = value == 1;
-
         GameCore.Instance.gameData.vibrationEnabled = enabled;
         GameCore.Instance.gameData.Save();
 
-        UpdateHandleColor(value, vibrationHandle);
-
         PlayToggleSFX();
-    }
-
-    private void UpdateHandleColor(float value, Image handle)
-    {
-        handle.color = value == 1 ? onColor : offColor;
     }
 }
