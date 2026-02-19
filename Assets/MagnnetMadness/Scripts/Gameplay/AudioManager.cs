@@ -13,13 +13,11 @@ public class AudioManager : MonoBehaviour
 
     [Header("UI Sounds")]
     public AudioClip buttonClick;
-    public AudioClip toggleClick;
 
     [Header("Game Sounds")]
+    public AudioClip magnetCollapse;
     public AudioClip coinCollect;
-    public AudioClip magnetCollect;
-    public AudioClip gameOver;
-    public AudioClip win;
+    public AudioClip winning;
 
     private void Awake()
     {
@@ -34,7 +32,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Start()
+    private void Start()
     {
         Initialize();
     }
@@ -83,7 +81,40 @@ public class AudioManager : MonoBehaviour
 
     #endregion
 
-    #region SFX
+    #region UI SFX
+
+    public void PlayButtonClick()
+    {
+        PlaySFX(buttonClick);
+    }
+
+    #endregion
+
+    #region GAME SFX
+
+    public void PlayMagnetCollapse()
+    {
+        PlaySFX(magnetCollapse);
+    }
+
+    public void PlayWinning()
+    {
+        PlaySFX(winning);
+    }
+
+    public void PlayCoin()
+    {
+        if (!GameCore.Instance.gameData.sfxEnabled) return;
+        if (coinCollect == null) return;
+
+        sfxSource.pitch = Random.Range(0.9f, 1.1f);
+        sfxSource.PlayOneShot(coinCollect);
+        sfxSource.pitch = 1f;
+    }
+
+    #endregion
+
+    #region CORE SFX METHOD
 
     public void PlaySFX(AudioClip clip)
     {

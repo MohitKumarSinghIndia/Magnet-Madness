@@ -15098,13 +15098,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   musicSource: {fileID: 215374836}
   sfxSource: {fileID: 1278628962}
-  backgroundMusic: {fileID: 8300000, guid: f5638268073cfe147b3c1276db92958d, type: 3}
-  buttonClick: {fileID: 8300000, guid: 5a149d491ba612044976bd878f9f04ff, type: 3}
-  toggleClick: {fileID: 8300000, guid: e4aafc4b9e7e25f45a4308fe0f34dca1, type: 3}
-  coinCollect: {fileID: 8300000, guid: e4aafc4b9e7e25f45a4308fe0f34dca1, type: 3}
-  magnetCollect: {fileID: 8300000, guid: e4aafc4b9e7e25f45a4308fe0f34dca1, type: 3}
-  gameOver: {fileID: 8300000, guid: f5638268073cfe147b3c1276db92958d, type: 3}
-  win: {fileID: 8300000, guid: f5638268073cfe147b3c1276db92958d, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 9a3072a31c4bd7442a8a1b5f4407ff48, type: 3}
+  buttonClick: {fileID: 8300000, guid: c4f76fa128b378b4a8b7f3b489f6ce22, type: 3}
+  magnetCollapse: {fileID: 0}
+  coinCollect: {fileID: 0}
+  winning: {fileID: 8300000, guid: 7768246829d50da4d8cb862dbb4cd665, type: 3}
 --- !u!114 &69481789654017369
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -300,6 +300,8 @@ public class UIManager : MonoBehaviour
     {
         isGameOver = true;
 
+        AudioManager.Instance?.PlayWinning();
+
         if (winner == PlayerTurn.Player1)
         {
             GameCore.Instance.gameData.AddCoins(50);
@@ -455,10 +457,7 @@ public class UIManager : MonoBehaviour
     #region BUTTON SOUNDS
     private void PlayButtonClickSound()
     {
-        if (AudioManager.Instance != null && AudioManager.Instance.buttonClick != null)
-        {
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.buttonClick);
-        }
+        AudioManager.Instance?.PlayButtonClick();
     }
 
     #endregion

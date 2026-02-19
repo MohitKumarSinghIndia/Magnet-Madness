@@ -41,12 +41,7 @@ public class SettingsPanel : MonoBehaviour
     {
         if (isLoadingSettings) return;
 
-        if (AudioManager.Instance != null &&
-            AudioManager.Instance.toggleClick != null &&
-            GameCore.Instance.gameData.sfxEnabled)
-        {
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.toggleClick);
-        }
+        AudioManager.Instance?.PlayButtonClick();
     }
 
     void OnMusicChanged(bool enabled)
