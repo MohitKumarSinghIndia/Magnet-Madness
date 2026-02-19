@@ -7,6 +7,9 @@ public class GameCore : MonoBehaviour
     public GameData_SO gameData;
     public MagnetSkinLibrary_SO skinLibrary;
 
+    public string player1Name = "Player 1";
+    public string player2Name = "Player 2";
+
     private void Awake()
     {
         Instance = this;

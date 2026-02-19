@@ -214,19 +214,23 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
 
         if (player1Magnets <= 0)
-            HandleGameOver(GameCore.Instance.gameData.player1Name);
+            HandleGameOver(PlayerTurn.Player1);
         else if (player2Magnets <= 0)
-            HandleGameOver(GameCore.Instance.gameData.player2Name);
+            HandleGameOver(PlayerTurn.Player2);
     }
 
-    private void HandleGameOver(string winnerName)
+    private void HandleGameOver(PlayerTurn winner)
     {
         if (isGameOver) return;
 
         isGameOver = true;
         StopTurnTimer();
 
-        UIManager.Instance.ShowWin(winnerName);
+        string winnerName = (winner == PlayerTurn.Player1)
+            ? GameCore.Instance.player1Name
+            : GameCore.Instance.player2Name;
+
+        UIManager.Instance.ShowWin(winner, winnerName);
         TryShowInterstitialOnGameOver();
     }
 

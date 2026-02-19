@@ -140,8 +140,8 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        GameCore.Instance.gameData.player1Name = player1Input.text;
-        GameCore.Instance.gameData.player2Name = player2Input.text;
+        GameCore.Instance.player1Name = player1Input.text;
+        GameCore.Instance.player2Name = player2Input.text;
         GameCore.Instance.gameData.Save();
 
         GameManager.Instance.InitializeGame();
@@ -282,8 +282,8 @@ public class UIManager : MonoBehaviour
         gameOverPanel.SetActive(false);
         winMessageText.text = "";
 
-        player1NameText.text = GameCore.Instance.gameData.player1Name;
-        player2NameText.text = GameCore.Instance.gameData.player2Name;
+        player1NameText.text = GameCore.Instance.player1Name;
+        player2NameText.text = GameCore.Instance.player2Name;
 
         turnTimerText.color = normalTimerColor;
         UpdateTurnTimer(GameManager.Instance.turnDuration);
@@ -296,16 +296,23 @@ public class UIManager : MonoBehaviour
         UpdateTurnIndicator(GameManager.Instance.currentTurn);
     }
 
-    public void ShowWin(string winnerName)
+    public void ShowWin(PlayerTurn winner, string winnerName)
     {
         isGameOver = true;
 
-        GameCore.Instance.gameData.AddCoins(50);
+        if (winner == PlayerTurn.Player1)
+        {
+            GameCore.Instance.gameData.AddCoins(50);
+        }
+
         RefreshCoinsUI();
+
         winMessageText.text =
             $"<size=120>VICTORY !</size>\n\n" +
-           $"<size=100><color=#FF5700>{winnerName}</color></size>\n\n" +
-            $"Reward <color=#FFD700>+50 Coins</color>";
+            $"<size=100><color=#FF5700>{winnerName}</color></size>\n\n" +
+            (winner == PlayerTurn.Player1
+                ? $"Reward <color=#FFD700>+50 Coins</color>"
+                : $"");
 
         AnimatePanelOpen(gameOverPanel);
 

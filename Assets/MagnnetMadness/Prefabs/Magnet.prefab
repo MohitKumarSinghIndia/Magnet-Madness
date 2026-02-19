@@ -125,7 +125,7 @@ MonoBehaviour:
   shakeDistance: 120
   dragShakeDuration: 0.15
   visualRoot: {fileID: 3313436141213274957}
-  dragOffset: {x: 0, y: 200, z: 0}
+  dragOffset: {x: 0, y: 250, z: 0}
   dragSmoothSpeed: 15
   highlightScaleUp: 1.15
   highlightDuration: 0.15

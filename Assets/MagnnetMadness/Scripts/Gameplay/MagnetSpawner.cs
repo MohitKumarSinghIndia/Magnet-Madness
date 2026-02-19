@@ -30,10 +30,6 @@ public class MagnetSpawner : MonoBehaviour
     {
         var slots = playerSlots[owner];
 
-        int skin = (owner == PlayerTurn.Player1)
-            ? GameCore.Instance.gameData.selectedMagnetSkin
-            : 0; // Player 2 default skin
-
         GameObject obj;
         Image image;
         Magnet magnet;
@@ -46,13 +42,12 @@ public class MagnetSpawner : MonoBehaviour
             magnet = obj.GetComponent<Magnet>();
             image = magnet.magnetImage;
 
-            image.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+            image.sprite = GetPlayerSkin(owner);
 
             magnet.owner = owner;
             magnet.SetSlotIndex(i);
         }
     }
-
 
     int GetFreeSlot(PlayerTurn owner)
     {
@@ -66,12 +61,14 @@ public class MagnetSpawner : MonoBehaviour
             if (slot.childCount > 0)
             {
                 magnet = slot.GetChild(0).GetComponent<Magnet>();
-                if (magnet != null) used[magnet.slotIndex] = true;
+                if (magnet != null)
+                    used[magnet.slotIndex] = true;
             }
         }
 
         for (int i = 0; i < used.Length; i++)
-            if (!used[i]) return i;
+            if (!used[i])
+                return i;
 
         return slots.Count - 1;
     }
@@ -79,10 +76,6 @@ public class MagnetSpawner : MonoBehaviour
     public void RespawnMagnet(PlayerTurn owner)
     {
         int freeSlot = GetFreeSlot(owner);
-        int skin = (owner == PlayerTurn.Player1)
-            ? GameCore.Instance.gameData.selectedMagnetSkin
-            : 0; // Player 2 default skin
-
         Transform slot = playerSlots[owner][freeSlot];
 
         GameObject obj = Instantiate(magnetPrefab, slot);
@@ -91,10 +84,21 @@ public class MagnetSpawner : MonoBehaviour
         Magnet magnet = obj.GetComponent<Magnet>();
         Image image = magnet.magnetImage;
 
-        image.sprite = GameCore.Instance.skinLibrary.GetSkin(skin);
+        image.sprite = GetPlayerSkin(owner);
 
         magnet.owner = owner;
         magnet.SetSlotIndex(freeSlot);
     }
 
+    Sprite GetPlayerSkin(PlayerTurn owner)
+    {
+        if (owner == PlayerTurn.Player1)
+        {
+            return GameCore.Instance.skinLibrary.GetSkin(
+                GameCore.Instance.gameData.selectedMagnetSkin
+            );
+        }
+
+        return GameCore.Instance.skinLibrary.GetDefaultSkin();
+    }
 }

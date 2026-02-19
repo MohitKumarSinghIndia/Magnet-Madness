@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: MagnetSkins
   m_EditorClassIdentifier: Assembly-CSharp::MagnetSkinLibrary_SO
   magnetSkins:
-  - {fileID: 1019920822, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: -73697136, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: -433655346, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: -873412320, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: 721371648, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: 1965360143, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
   - {fileID: 2121693971, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: -453492710, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: 929958459, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: 280597788, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: 664088134, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
   - {fileID: -882975687, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
-  - {fileID: -529651435, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: -453492710, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: 280597788, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: 2000052135, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: 55591151, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
+  - {fileID: -669549092, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}
   skinPrices: 
+  defaultSkin: {fileID: 1093756582, guid: 9e8538dc0fe4cae4fbd93f987da598d6, type: 3}

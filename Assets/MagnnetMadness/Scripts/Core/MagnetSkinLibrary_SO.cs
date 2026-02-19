@@ -9,7 +9,8 @@ public class MagnetSkinLibrary_SO : ScriptableObject
     [Header("Skin Prices (auto-generated)")]
     public int[] skinPrices;
 
-    // Get skin sprite
+    public Sprite defaultSkin;
+
     public Sprite GetSkin(int index)
     {
         if (magnetSkins == null || magnetSkins.Length == 0)
@@ -18,24 +19,47 @@ public class MagnetSkinLibrary_SO : ScriptableObject
         index = Mathf.Clamp(index, 0, magnetSkins.Length - 1);
         return magnetSkins[index];
     }
-    // Generate skin prices
+
+    public Sprite GetDefaultSkin()
+    {
+        return defaultSkin;
+    }
+
     public void AutoSetupPrices()
     {
-        if (magnetSkins == null)
+        if (magnetSkins == null || magnetSkins.Length == 0)
+        {
+            Debug.LogWarning("Magnet skins not assigned!");
             return;
+        }
+
+        int[] basePrices = { 0, 150, 350 ,550,700};
 
         if (skinPrices == null || skinPrices.Length != magnetSkins.Length)
         {
             skinPrices = new int[magnetSkins.Length];
+        }
 
-            for (int i = 0; i < skinPrices.Length; i++)
+        for (int i = 0; i < magnetSkins.Length; i++)
+        {
+            if (i < basePrices.Length)
             {
-                skinPrices[i] = (i == 0) ? 0 : i * 100;
+                skinPrices[i] = basePrices[i];
+            }
+            else
+            {
+                int lastPrice = skinPrices[i - 1];
+                int increment = Mathf.RoundToInt(lastPrice * 0.2f);
+
+                int newPrice = lastPrice + increment;
+
+                newPrice = Mathf.RoundToInt(newPrice / 100f) * 100;
+
+                skinPrices[i] = newPrice;
             }
         }
     }
 
-    // Get skin price
     public int GetPrice(int index)
     {
         if (skinPrices == null || skinPrices.Length == 0)
