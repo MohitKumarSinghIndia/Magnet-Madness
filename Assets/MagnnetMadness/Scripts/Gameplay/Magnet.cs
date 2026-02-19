@@ -201,6 +201,8 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     {
         StopAllDragShakes();
 
+        AudioManager.Instance?.PlayMagnetCollapse();
+
         MagnetShake();
 
         foreach (var m in hitMagnets)
