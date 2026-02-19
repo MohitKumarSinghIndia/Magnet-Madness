@@ -445,8 +445,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea24f9d6c747df4baa4fff1214964cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsManager
+  soundToggle: {fileID: 1881645791}
   musicToggle: {fileID: 587178287}
-  sfxToggle: {fileID: 1881645791}
   vibrationToggle: {fileID: 1948165477}
 --- !u!1 &36058816
 GameObject:
@@ -974,7 +974,7 @@ GameObject:
   - component: {fileID: 163962574}
   - component: {fileID: 163962573}
   m_Layer: 5
-  m_Name: SFX
+  m_Name: Sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5177,8 +5177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eea24f9d6c747df4baa4fff1214964cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsManager
+  soundToggle: {fileID: 662583135}
   musicToggle: {fileID: 1998743188}
-  sfxToggle: {fileID: 662583135}
   vibrationToggle: {fileID: 1570664435}
 --- !u!114 &662231637
 MonoBehaviour:
@@ -5229,7 +5229,7 @@ GameObject:
   - component: {fileID: 662583134}
   - component: {fileID: 662583135}
   m_Layer: 5
-  m_Name: SFX Toggle
+  m_Name: Sound Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8125,7 +8125,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SFX
+  m_text: Sound
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 226872c3b3c2b9949b8fa90d25ce7e03, type: 2}
   m_sharedMaterial: {fileID: 2419980307226390064, guid: 226872c3b3c2b9949b8fa90d25ce7e03, type: 2}
@@ -9199,7 +9199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SFX
+  m_text: Sound
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 226872c3b3c2b9949b8fa90d25ce7e03, type: 2}
   m_sharedMaterial: {fileID: 2419980307226390064, guid: 226872c3b3c2b9949b8fa90d25ce7e03, type: 2}
@@ -11421,8 +11421,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1870064215}
   - {fileID: 1873261967}
+  - {fileID: 1870064215}
   - {fileID: 1679810130}
   m_Father: {fileID: 655073606}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -13230,7 +13230,7 @@ GameObject:
   - component: {fileID: 1873261969}
   - component: {fileID: 1873261968}
   m_Layer: 5
-  m_Name: SFX
+  m_Name: Sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13306,7 +13306,7 @@ GameObject:
   - component: {fileID: 1881645790}
   - component: {fileID: 1881645791}
   m_Layer: 5
-  m_Name: SFX Toggle
+  m_Name: Sound Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13812,8 +13812,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 417010458}
   - {fileID: 163962572}
+  - {fileID: 417010458}
   - {fileID: 1586968090}
   - {fileID: 230481367}
   m_Father: {fileID: 656395182}

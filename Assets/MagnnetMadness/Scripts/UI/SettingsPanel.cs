@@ -4,8 +4,8 @@ using UnityEngine.UI;
 public class SettingsPanel : MonoBehaviour
 {
     [Header("Toggles")]
+    public Toggle soundToggle;
     public Toggle musicToggle;
-    public Toggle sfxToggle;
     public Toggle vibrationToggle;
 
     private bool isLoadingSettings = false;
@@ -13,7 +13,7 @@ public class SettingsPanel : MonoBehaviour
     void OnEnable()
     {
         musicToggle.onValueChanged.AddListener(OnMusicChanged);
-        sfxToggle.onValueChanged.AddListener(OnSfxChanged);
+        soundToggle.onValueChanged.AddListener(OnSoundChanged);
         vibrationToggle.onValueChanged.AddListener(OnVibrationChanged);
 
         LoadSettings();
@@ -22,7 +22,7 @@ public class SettingsPanel : MonoBehaviour
     void OnDisable()
     {
         musicToggle.onValueChanged.RemoveListener(OnMusicChanged);
-        sfxToggle.onValueChanged.RemoveListener(OnSfxChanged);
+        soundToggle.onValueChanged.RemoveListener(OnSoundChanged);
         vibrationToggle.onValueChanged.RemoveListener(OnVibrationChanged);
     }
 
@@ -31,13 +31,13 @@ public class SettingsPanel : MonoBehaviour
         isLoadingSettings = true;
 
         musicToggle.isOn = GameCore.Instance.gameData.musicEnabled;
-        sfxToggle.isOn = GameCore.Instance.gameData.sfxEnabled;
+        soundToggle.isOn = GameCore.Instance.gameData.soundEnabled;
         vibrationToggle.isOn = GameCore.Instance.gameData.vibrationEnabled;
 
         isLoadingSettings = false;
     }
 
-    private void PlayToggleSFX()
+    private void PlayToggleSound()
     {
         if (isLoadingSettings) return;
 
@@ -56,17 +56,17 @@ public class SettingsPanel : MonoBehaviour
         else
             AudioManager.Instance.StopMusic();
 
-        PlayToggleSFX();
+        PlayToggleSound();
     }
 
-    void OnSfxChanged(bool enabled)
+    void OnSoundChanged(bool enabled)
     {
-        GameCore.Instance.gameData.sfxEnabled = enabled;
+        GameCore.Instance.gameData.soundEnabled = enabled;
         GameCore.Instance.gameData.Save();
 
         AudioManager.Instance.ApplySettings();
 
-        PlayToggleSFX();
+        PlayToggleSound();
     }
 
     void OnVibrationChanged(bool enabled)
@@ -74,6 +74,6 @@ public class SettingsPanel : MonoBehaviour
         GameCore.Instance.gameData.vibrationEnabled = enabled;
         GameCore.Instance.gameData.Save();
 
-        PlayToggleSFX();
+        PlayToggleSound();
     }
 }

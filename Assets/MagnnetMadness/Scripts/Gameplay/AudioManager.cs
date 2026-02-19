@@ -56,7 +56,7 @@ public class AudioManager : MonoBehaviour
     public void ApplySettings()
     {
         bool musicEnabled = GameCore.Instance.gameData.musicEnabled;
-        bool sfxEnabled = GameCore.Instance.gameData.sfxEnabled;
+        bool sfxEnabled = GameCore.Instance.gameData.soundEnabled;
 
         musicSource.mute = !musicEnabled;
         sfxSource.mute = !sfxEnabled;
@@ -104,7 +104,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayCoin()
     {
-        if (!GameCore.Instance.gameData.sfxEnabled) return;
+        if (!GameCore.Instance.gameData.soundEnabled) return;
         if (coinCollect == null) return;
 
         sfxSource.pitch = Random.Range(0.9f, 1.1f);
@@ -118,7 +118,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        if (!GameCore.Instance.gameData.sfxEnabled) return;
+        if (!GameCore.Instance.gameData.soundEnabled) return;
         if (clip == null) return;
 
         sfxSource.PlayOneShot(clip);

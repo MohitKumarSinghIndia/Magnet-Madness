@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameData_SO : ScriptableObject
 {
     public bool musicEnabled = true;
-    public bool sfxEnabled = true;
+    public bool soundEnabled = true;
     public bool vibrationEnabled = true;
 
     [Header("Currency")]
@@ -21,7 +21,7 @@ public class GameData_SO : ScriptableObject
     public void LoadFromPrefs(int skinCount)
     {
         musicEnabled = PlayerPrefs.GetInt("music", 1) == 1;
-        sfxEnabled = PlayerPrefs.GetInt("sfx", 1) == 1;
+        soundEnabled = PlayerPrefs.GetInt("sound", 1) == 1;
         vibrationEnabled = PlayerPrefs.GetInt("vibration", 1) == 1;
 
         coins = PlayerPrefs.GetInt("coins", 0);
@@ -41,7 +41,7 @@ public class GameData_SO : ScriptableObject
     public void Save()
     {
         PlayerPrefs.SetInt("music", musicEnabled ? 1 : 0);
-        PlayerPrefs.SetInt("sfx", sfxEnabled ? 1 : 0);
+        PlayerPrefs.SetInt("sound", soundEnabled ? 1 : 0);
         PlayerPrefs.SetInt("vibration", vibrationEnabled ? 1 : 0);
 
         PlayerPrefs.SetInt("coins", coins);
