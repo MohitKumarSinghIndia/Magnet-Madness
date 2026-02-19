@@ -1394,11 +1394,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
-    m_HighlightedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
-    m_PressedColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
-    m_SelectedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
-    m_DisabledColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 0.5019608}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -1416,19 +1416,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 190645191}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536433943}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnSettingsButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &190645191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11160,19 +11148,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1525292915}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536433943}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ShowAdForCoins
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1525292915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11282,6 +11258,14 @@ MonoBehaviour:
   shopPanel: {fileID: 499106139}
   playerNamePanel: {fileID: 223167706}
   aboutPanel: {fileID: 1679693817}
+  homeButton: {fileID: 2099450016}
+  settingsButton: {fileID: 190645190}
+  shopButton: {fileID: 2012908808}
+  playButton: {fileID: 2007582547}
+  startGameButton: {fileID: 2061921569}
+  watchAdsButton: {fileID: 1525292914}
+  normalColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
+  selectedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
   player1Input: {fileID: 570702046}
   player2Input: {fileID: 570263446}
   coinsText: {fileID: 1974329095}
@@ -14412,19 +14396,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2007582548}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536433943}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnPlayClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2007582548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14523,11 +14495,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
-    m_HighlightedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
-    m_PressedColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
-    m_SelectedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
-    m_DisabledColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 0.5019608}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -14545,19 +14517,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2012908809}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536433943}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnShopButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2012908809
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14754,19 +14714,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2061921570}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536433943}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnStartGameClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2061921570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14977,11 +14925,11 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
-    m_HighlightedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
-    m_PressedColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 1}
-    m_SelectedColor: {r: 0.9372549, g: 0.7764706, b: 0.03529412, a: 1}
-    m_DisabledColor: {r: 0.22352941, g: 0.44705883, b: 0.8156863, a: 0.5019608}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -14999,19 +14947,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2099450017}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1536433943}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: OnHomeButtonClicked
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2099450017
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15098,7 +15034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   musicSource: {fileID: 215374836}
   sfxSource: {fileID: 1278628962}
-  backgroundMusic: {fileID: 8300000, guid: 9a3072a31c4bd7442a8a1b5f4407ff48, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 5bd6cdea146ec3e45bc59e1ace294de2, type: 3}
   buttonClick: {fileID: 8300000, guid: c4f76fa128b378b4a8b7f3b489f6ce22, type: 3}
   magnetCollapse: {fileID: 8300000, guid: 16d8ac601603d8448a11a236f054f418, type: 3}
   coinCollect: {fileID: 0}

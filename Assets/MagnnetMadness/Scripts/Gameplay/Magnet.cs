@@ -175,6 +175,7 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
         if (hits.Count > 0)
         {
             HandleMultipleHits(hits);
+            AudioManager.Instance?.PlayMagnetCollapse();
             return;
         }
 
@@ -200,8 +201,6 @@ public class Magnet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHa
     void HandleMultipleHits(List<Magnet> hitMagnets)
     {
         StopAllDragShakes();
-
-        AudioManager.Instance?.PlayMagnetCollapse();
 
         MagnetShake();
 

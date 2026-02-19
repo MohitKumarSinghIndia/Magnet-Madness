@@ -70,6 +70,8 @@ public class SkinItemButton : MonoBehaviour
 
     private void OnClick()
     {
+        AudioManager.Instance?.PlayButtonClick();
+
         controller.OnSkinItemClicked(this);
     }
 }

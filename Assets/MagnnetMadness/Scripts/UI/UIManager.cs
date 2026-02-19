@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance;
 
     #region VARIABLES
+
     [Header("-----------UI-------------")]
 
     [Header("Containers")]
@@ -23,6 +24,17 @@ public class UIManager : MonoBehaviour
     public GameObject shopPanel;
     public GameObject playerNamePanel;
     public GameObject aboutPanel;
+
+    public Button homeButton;
+    public Button settingsButton;
+    public Button shopButton;
+    public Button playButton;
+    public Button startGameButton;
+    public Button watchAdsButton;
+
+    [Header("Menu Button Colors")]
+    public Color normalColor = new Color32(57, 114, 208, 255);   // #3972D0
+    public Color selectedColor = new Color32(239, 198, 9, 255);  // #EFC609
 
     [Header("Player Input Fields")]
     public TMP_InputField player1Input;
@@ -101,6 +113,16 @@ public class UIManager : MonoBehaviour
 
     private void OnEnable()
     {
+        if (mainMenuPanel != null)
+        {
+            homeButton.onClick.AddListener(OnHomeButtonClicked);
+            settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+            shopButton.onClick.AddListener(OnShopButtonClicked);
+            playButton.onClick.AddListener(OnPlayClicked);
+            startGameButton.onClick.AddListener(OnStartGameClicked);
+            watchAdsButton.onClick.AddListener(OnWatchAdsButtonClicked);
+        }
+
         if (gameOverPanel != null)
         {
             restartButton.onClick.AddListener(OnRestartClicked);
@@ -117,12 +139,37 @@ public class UIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        restartButton.onClick.RemoveListener(OnRestartClicked);
-        gameOverPanelHomeButton.onClick.RemoveListener(OnHomeClicked);
+        if (mainMenuPanel != null)
+        {
+            homeButton.onClick.RemoveListener(OnHomeButtonClicked);
+            settingsButton.onClick.RemoveListener(OnSettingsButtonClicked);
+            shopButton.onClick.RemoveListener(OnShopButtonClicked);
+            playButton.onClick.RemoveListener(OnPlayClicked);
+            startGameButton.onClick.RemoveListener(OnStartGameClicked);
+            watchAdsButton.onClick.RemoveListener(OnWatchAdsButtonClicked);
+        }
 
-        pauseButton.onClick.RemoveListener(OnPauseClicked);
-        resumeButton.onClick.RemoveListener(OnResumeClicked);
-        pausePanelHomeButton.onClick.RemoveListener(OnPausePanelHomeClicked);
+        if (gameOverPanel != null)
+        {
+            restartButton.onClick.RemoveListener(OnRestartClicked);
+            gameOverPanelHomeButton.onClick.RemoveListener(OnHomeClicked);
+        }
+
+        if (pausePanel != null)
+        {
+            pauseButton.onClick.RemoveListener(OnPauseClicked);
+            resumeButton.onClick.RemoveListener(OnResumeClicked);
+            pausePanelHomeButton.onClick.RemoveListener(OnPausePanelHomeClicked);
+        }
+    }
+
+    #endregion
+
+    #region SAFE UI CHECK
+
+    private bool CanProcessUI()
+    {
+        return !isPanelAnimating;
     }
 
     #endregion
@@ -153,9 +200,15 @@ public class UIManager : MonoBehaviour
 
     private void AnimatePanelOpen(GameObject panel, UnityAction onCompleteEvent = null)
     {
-        isPanelAnimating = false;
+        if (isPanelAnimating) return;
+
+        isPanelAnimating = true;
+
+        HideAllMenuSubPanels();
 
         panel.SetActive(true);
+
+        UpdateMenuButtonStates(panel);
 
         CanvasGroup cg = panel.GetComponent<CanvasGroup>();
         if (cg == null)
@@ -167,9 +220,8 @@ public class UIManager : MonoBehaviour
         panel.transform.localScale = Vector3.zero;
         cg.alpha = 0f;
 
-        isPanelAnimating = true;
-
         Sequence seq = DOTween.Sequence();
+
         seq.Append(panel.transform
             .DOScale(Vector3.one, panelAnimDuration)
             .SetEase(Ease.OutBack)
@@ -197,27 +249,31 @@ public class UIManager : MonoBehaviour
         playerNamePanel.SetActive(false);
         settingsPanel.SetActive(false);
         shopPanel.SetActive(false);
-        aboutPanel.SetActive(false); 
+        aboutPanel.SetActive(false);
         pausePanel.SetActive(false);
         gameOverPanel.SetActive(false);
     }
 
     private void ShowPanel(GameObject target)
     {
-        HideAllMenuSubPanels();
-        AnimatePanelOpen(target);
-        RefreshCoinsUI();
+        if (!CanProcessUI()) return;
+
+        AnimatePanelOpen(target, () =>
+        {
+            RefreshCoinsUI();
+        });
     }
 
     public void ShowMainMenuOnly()
     {
+        if (!CanProcessUI()) return;
+
         gameplayPanel.SetActive(false);
         mainMenuPanel.SetActive(true);
 
         player1Input.text = string.Empty;
         player2Input.text = string.Empty;
 
-        HideAllMenuSubPanels();
         AnimatePanelOpen(homePanel);
 
         RefreshCoinsUI();
@@ -231,6 +287,8 @@ public class UIManager : MonoBehaviour
 
     public void OnPlayClicked()
     {
+        if (!CanProcessUI()) return;
+
         PlayButtonClickSound();
         ShowPanel(playerNamePanel);
 
@@ -240,34 +298,76 @@ public class UIManager : MonoBehaviour
 
     public void OnSettingsButtonClicked()
     {
+        if (!CanProcessUI()) return;
+
         PlayButtonClickSound();
         ShowPanel(settingsPanel);
     }
 
     public void OnHomeButtonClicked()
     {
+        if (!CanProcessUI()) return;
+
         PlayButtonClickSound();
         ShowMainMenuOnly();
     }
 
     public void OnShopButtonClicked()
     {
+        if (!CanProcessUI()) return;
+
         PlayButtonClickSound();
         ShowPanel(shopPanel);
     }
 
-    public void OnAboutClicked()
+    public void OnAboutButtonClicked()
     {
+        if (!CanProcessUI()) return;
+
         PlayButtonClickSound();
         ShowPanel(aboutPanel);
     }
 
-    public void OnBackToMainMenu()
+    public void OnWatchAdsButtonClicked()
     {
-        PlayButtonClickSound();
-        HideAllMenuSubPanels();
-        AnimatePanelOpen(homePanel);
-        RefreshCoinsUI();
+        int coins = (int)Random.Range(5, 50);
+
+        GoogleAdsManager.Instance.ShowRewarded(() =>
+        {
+            GameCore.Instance.gameData.AddCoins(coins);
+            RefreshCoinsUI();
+        });
+    }
+
+    private void UpdateMenuButtonStates(GameObject activePanel)
+    {
+        SetButtonState(homeButton, normalColor, true);
+        SetButtonState(settingsButton, normalColor, true);
+        SetButtonState(shopButton, normalColor, true);
+
+        if (activePanel == homePanel)
+            SetButtonState(homeButton, selectedColor, false);
+
+        else if (activePanel == settingsPanel)
+            SetButtonState(settingsButton, selectedColor, false);
+
+        else if (activePanel == shopPanel)
+            SetButtonState(shopButton, selectedColor, false);
+    }
+
+    private void SetButtonState(Button button, Color color, bool interactable)
+    {
+        if (button == null) return;
+
+        button.interactable = interactable;
+
+        var colors = button.colors;
+        colors.normalColor = color;
+        colors.selectedColor = color;
+        colors.highlightedColor = color;
+        colors.pressedColor = color;
+        colors.disabledColor = color;
+        button.colors = colors;
     }
 
     #endregion
@@ -462,18 +562,4 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region ADS
-
-    public void ShowAdForCoins()
-    {
-        int coins = (int)Random.Range(5, 50);
-
-        GoogleAdsManager.Instance.ShowRewarded(() =>
-        {
-            GameCore.Instance.gameData.AddCoins(coins);
-            RefreshCoinsUI();
-        });
-    }
-
-    #endregion
 }

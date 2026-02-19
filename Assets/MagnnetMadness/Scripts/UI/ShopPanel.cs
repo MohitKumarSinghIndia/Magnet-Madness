@@ -148,12 +148,16 @@ public class ShopPanel : MonoBehaviour
 
     private void HidePanels()
     {
+        AudioManager.Instance?.PlayButtonClick();
+
         confirmPanel.SetActive(false);
         notEnoughCoinsPanel.SetActive(false);
     }
 
     private void OnConfirmPurchase()
     {
+        AudioManager.Instance?.PlayButtonClick();
+
         var data = GameCore.Instance.gameData;
         var lib = GameCore.Instance.skinLibrary;
 
