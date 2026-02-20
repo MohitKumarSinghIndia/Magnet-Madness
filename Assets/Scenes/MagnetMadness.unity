@@ -5073,7 +5073,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659813752}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -5087,8 +5087,8 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 1
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 60, y: 60}
-  m_Constraint: 1
+  m_Spacing: {x: 50, y: 50}
+  m_Constraint: 0
   m_ConstraintCount: 5
 --- !u!114 &659813755
 MonoBehaviour:
@@ -9931,7 +9931,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1343807522}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
   m_Name: 
@@ -9945,8 +9945,8 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 1
   m_CellSize: {x: 100, y: 100}
-  m_Spacing: {x: 60, y: 60}
-  m_Constraint: 1
+  m_Spacing: {x: 50, y: 50}
+  m_Constraint: 0
   m_ConstraintCount: 5
 --- !u!114 &1343807525
 MonoBehaviour:
