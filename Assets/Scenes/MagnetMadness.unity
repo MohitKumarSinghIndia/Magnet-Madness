@@ -1360,6 +1360,7 @@ GameObject:
   - component: {fileID: 190645192}
   - component: {fileID: 190645191}
   - component: {fileID: 190645190}
+  - component: {fileID: 190645193}
   m_Layer: 5
   m_Name: Setting Button
   m_TagString: Untagged
@@ -1469,6 +1470,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190645188}
   m_CullTransparentMesh: 1
+--- !u!114 &190645193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 190645188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &211816122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2559,6 +2575,7 @@ GameObject:
   - component: {fileID: 307734094}
   - component: {fileID: 307734093}
   - component: {fileID: 307734092}
+  - component: {fileID: 307734095}
   m_Layer: 5
   m_Name: No Button
   m_TagString: Untagged
@@ -2668,6 +2685,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 307734090}
   m_CullTransparentMesh: 1
+--- !u!114 &307734095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307734090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,6 +3136,7 @@ GameObject:
   - component: {fileID: 390870875}
   - component: {fileID: 390870877}
   - component: {fileID: 390870876}
+  - component: {fileID: 390870878}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -3169,6 +3202,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 390870874}
   m_CullTransparentMesh: 1
+--- !u!114 &390870878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 390870874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -3385,6 +3433,7 @@ GameObject:
   - component: {fileID: 425835252}
   - component: {fileID: 425835251}
   - component: {fileID: 425835250}
+  - component: {fileID: 425835253}
   m_Layer: 5
   m_Name: Home Button
   m_TagString: Untagged
@@ -3494,6 +3543,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425835248}
   m_CullTransparentMesh: 1
+--- !u!114 &425835253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425835248}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &432793923
 GameObject:
   m_ObjectHideFlags: 0
@@ -3505,6 +3569,7 @@ GameObject:
   - component: {fileID: 432793924}
   - component: {fileID: 432793926}
   - component: {fileID: 432793925}
+  - component: {fileID: 432793927}
   m_Layer: 5
   m_Name: Top Panel
   m_TagString: Untagged
@@ -3570,6 +3635,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 432793923}
   m_CullTransparentMesh: 1
+--- !u!114 &432793927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432793923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &442384898
 GameObject:
   m_ObjectHideFlags: 0
@@ -3616,6 +3696,7 @@ GameObject:
   - component: {fileID: 445747906}
   - component: {fileID: 445747908}
   - component: {fileID: 445747907}
+  - component: {fileID: 445747909}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -3681,6 +3762,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 445747905}
   m_CullTransparentMesh: 1
+--- !u!114 &445747909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 445747905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &462906584
 GameObject:
   m_ObjectHideFlags: 0
@@ -5392,6 +5488,7 @@ GameObject:
   - component: {fileID: 671555171}
   - component: {fileID: 671555170}
   - component: {fileID: 671555169}
+  - component: {fileID: 671555172}
   m_Layer: 5
   m_Name: Yes Button
   m_TagString: Untagged
@@ -5501,6 +5598,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 671555167}
   m_CullTransparentMesh: 1
+--- !u!114 &671555172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671555167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &682940441
 GameObject:
   m_ObjectHideFlags: 0
@@ -5649,6 +5761,7 @@ GameObject:
   - component: {fileID: 714608150}
   - component: {fileID: 714608152}
   - component: {fileID: 714608151}
+  - component: {fileID: 714608153}
   m_Layer: 5
   m_Name: Top Panel
   m_TagString: Untagged
@@ -5714,6 +5827,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 714608149}
   m_CullTransparentMesh: 1
+--- !u!114 &714608153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714608149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &726301044
 GameObject:
   m_ObjectHideFlags: 0
@@ -5726,6 +5854,7 @@ GameObject:
   - component: {fileID: 726301048}
   - component: {fileID: 726301047}
   - component: {fileID: 726301046}
+  - component: {fileID: 726301049}
   m_Layer: 5
   m_Name: Magnet
   m_TagString: Untagged
@@ -5812,6 +5941,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726301044}
   m_CullTransparentMesh: 1
+--- !u!114 &726301049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726301044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &731000205
 GameObject:
   m_ObjectHideFlags: 0
@@ -6765,6 +6909,7 @@ GameObject:
   - component: {fileID: 935234503}
   - component: {fileID: 935234505}
   - component: {fileID: 935234504}
+  - component: {fileID: 935234506}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -6830,6 +6975,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935234502}
   m_CullTransparentMesh: 1
+--- !u!114 &935234506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 935234502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &950537559
 GameObject:
   m_ObjectHideFlags: 0
@@ -8343,6 +8503,7 @@ GameObject:
   - component: {fileID: 1106920659}
   - component: {fileID: 1106920661}
   - component: {fileID: 1106920660}
+  - component: {fileID: 1106920662}
   m_Layer: 5
   m_Name: Logo
   m_TagString: Untagged
@@ -8407,6 +8568,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106920658}
   m_CullTransparentMesh: 1
+--- !u!114 &1106920662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106920658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1110367160
 GameObject:
   m_ObjectHideFlags: 0
@@ -8959,6 +9135,7 @@ GameObject:
   - component: {fileID: 1165015399}
   - component: {fileID: 1165015398}
   - component: {fileID: 1165015397}
+  - component: {fileID: 1165015400}
   m_Layer: 5
   m_Name: Restart Button
   m_TagString: Untagged
@@ -9068,6 +9245,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1165015395}
   m_CullTransparentMesh: 1
+--- !u!114 &1165015400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1165015395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1183137215
 GameObject:
   m_ObjectHideFlags: 0
@@ -9293,6 +9485,7 @@ GameObject:
   - component: {fileID: 1195520627}
   - component: {fileID: 1195520626}
   - component: {fileID: 1195520625}
+  - component: {fileID: 1195520628}
   m_Layer: 5
   m_Name: Pause Button
   m_TagString: Untagged
@@ -9402,6 +9595,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195520623}
   m_CullTransparentMesh: 1
+--- !u!114 &1195520628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1195520623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -10}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1213445782
 GameObject:
   m_ObjectHideFlags: 0
@@ -9449,6 +9657,7 @@ GameObject:
   - component: {fileID: 1245671581}
   - component: {fileID: 1245671580}
   - component: {fileID: 1245671579}
+  - component: {fileID: 1245671582}
   m_Layer: 5
   m_Name: Home Button
   m_TagString: Untagged
@@ -9558,6 +9767,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1245671577}
   m_CullTransparentMesh: 1
+--- !u!114 &1245671582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245671577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1255707759
 GameObject:
   m_ObjectHideFlags: 0
@@ -9569,6 +9793,7 @@ GameObject:
   - component: {fileID: 1255707760}
   - component: {fileID: 1255707762}
   - component: {fileID: 1255707761}
+  - component: {fileID: 1255707763}
   m_Layer: 5
   m_Name: Coins
   m_TagString: Untagged
@@ -9635,6 +9860,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1255707759}
   m_CullTransparentMesh: 1
+--- !u!114 &1255707763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1255707759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1278628960
 GameObject:
   m_ObjectHideFlags: 0
@@ -10448,6 +10688,7 @@ GameObject:
   - component: {fileID: 1417397268}
   - component: {fileID: 1417397270}
   - component: {fileID: 1417397269}
+  - component: {fileID: 1417397271}
   m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
@@ -10513,6 +10754,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1417397267}
   m_CullTransparentMesh: 1
+--- !u!114 &1417397271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417397267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1437880789
 GameObject:
   m_ObjectHideFlags: 0
@@ -11092,6 +11348,7 @@ GameObject:
   - component: {fileID: 1525292916}
   - component: {fileID: 1525292915}
   - component: {fileID: 1525292914}
+  - component: {fileID: 1525292917}
   m_Layer: 5
   m_Name: Watch Ads
   m_TagString: Untagged
@@ -11201,6 +11458,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1525292912}
   m_CullTransparentMesh: 1
+--- !u!114 &1525292917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1525292912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -10}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1529257397
 GameObject:
   m_ObjectHideFlags: 0
@@ -12644,6 +12916,7 @@ GameObject:
   - component: {fileID: 1817665255}
   - component: {fileID: 1817665257}
   - component: {fileID: 1817665256}
+  - component: {fileID: 1817665258}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -12709,6 +12982,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1817665254}
   m_CullTransparentMesh: 1
+--- !u!114 &1817665258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1817665254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -10}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1821888812
 GameObject:
   m_ObjectHideFlags: 0
@@ -12999,6 +13287,7 @@ GameObject:
   - component: {fileID: 1861433486}
   - component: {fileID: 1861433485}
   - component: {fileID: 1861433484}
+  - component: {fileID: 1861433487}
   m_Layer: 5
   m_Name: Resume Button
   m_TagString: Untagged
@@ -13108,6 +13397,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861433482}
   m_CullTransparentMesh: 1
+--- !u!114 &1861433487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861433482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1870064214
 GameObject:
   m_ObjectHideFlags: 0
@@ -14461,6 +14765,7 @@ GameObject:
   - component: {fileID: 2012908810}
   - component: {fileID: 2012908809}
   - component: {fileID: 2012908808}
+  - component: {fileID: 2012908811}
   m_Layer: 5
   m_Name: Shop Button
   m_TagString: Untagged
@@ -14570,6 +14875,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2012908806}
   m_CullTransparentMesh: 1
+--- !u!114 &2012908811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012908806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2042603399
 GameObject:
   m_ObjectHideFlags: 0
@@ -14658,6 +14978,7 @@ GameObject:
   - component: {fileID: 2061921571}
   - component: {fileID: 2061921570}
   - component: {fileID: 2061921569}
+  - component: {fileID: 2061921572}
   m_Layer: 5
   m_Name: Start Button
   m_TagString: Untagged
@@ -14767,6 +15088,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2061921567}
   m_CullTransparentMesh: 1
+--- !u!114 &2061921572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061921567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2089203351
 GameObject:
   m_ObjectHideFlags: 0
@@ -14891,6 +15227,7 @@ GameObject:
   - component: {fileID: 2099450018}
   - component: {fileID: 2099450017}
   - component: {fileID: 2099450016}
+  - component: {fileID: 2099450019}
   m_Layer: 5
   m_Name: Home Button
   m_TagString: Untagged
@@ -15000,6 +15337,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099450014}
   m_CullTransparentMesh: 1
+--- !u!114 &2099450019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099450014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Shadow
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -15}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2147166361
 GameObject:
   m_ObjectHideFlags: 0
