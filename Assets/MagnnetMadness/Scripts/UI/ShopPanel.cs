@@ -141,7 +141,7 @@ public class ShopPanel : MonoBehaviour
         pendingSkinIndex = index;
 
         confirmTitleText.text = "Do you want to buy this skin?";
-        confirmPriceText.text = "Cost: " + price + " Coins";
+        confirmPriceText.text = price + " Coins";
 
         confirmPanel.SetActive(true);
     }
