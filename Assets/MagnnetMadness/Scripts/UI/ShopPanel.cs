@@ -42,8 +42,6 @@ public class ShopPanel : MonoBehaviour
 
     private void Awake()
     {
-        yesButton.onClick.AddListener(OnConfirmPurchase);
-        noButton.onClick.AddListener(HidePanels);
 
         confirmPanel.SetActive(false);
 
@@ -57,6 +55,9 @@ public class ShopPanel : MonoBehaviour
 
     private void OnEnable()
     {
+        yesButton.onClick.AddListener(OnConfirmPurchase);
+        noButton.onClick.AddListener(OnCanclePurchase);
+
         selectedSkinIndex = GameCore.Instance.gameData.selectedMagnetSkin;
         HidePanels();
         LoadGrid();
@@ -64,6 +65,9 @@ public class ShopPanel : MonoBehaviour
 
     private void OnDisable()
     {
+        yesButton.onClick.RemoveListener(OnConfirmPurchase);
+        noButton.onClick.RemoveListener(OnCanclePurchase);
+
         popupSequence?.Kill();
     }
 
@@ -148,10 +152,15 @@ public class ShopPanel : MonoBehaviour
 
     private void HidePanels()
     {
-        AudioManager.Instance?.PlayButtonClick();
-
         confirmPanel.SetActive(false);
         notEnoughCoinsPanel.SetActive(false);
+    }
+
+    private void OnCanclePurchase()
+    {
+        AudioManager.Instance?.PlayButtonClick();
+
+        HidePanels();
     }
 
     private void OnConfirmPurchase()

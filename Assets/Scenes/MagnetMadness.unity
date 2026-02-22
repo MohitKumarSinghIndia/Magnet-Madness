@@ -15497,7 +15497,7 @@ MonoBehaviour:
   musicSource: {fileID: 215374836}
   sfxSource: {fileID: 1278628962}
   backgroundMusic: {fileID: 8300000, guid: 5bd6cdea146ec3e45bc59e1ace294de2, type: 3}
-  buttonClick: {fileID: 8300000, guid: c4f76fa128b378b4a8b7f3b489f6ce22, type: 3}
+  buttonClick: {fileID: 8300000, guid: 278860c4b69516444bd2049b38cfe286, type: 3}
   magnetCollapse: {fileID: 8300000, guid: 16d8ac601603d8448a11a236f054f418, type: 3}
   coinCollect: {fileID: 0}
   winning: {fileID: 8300000, guid: 7768246829d50da4d8cb862dbb4cd665, type: 3}
