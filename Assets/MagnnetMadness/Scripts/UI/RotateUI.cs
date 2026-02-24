@@ -4,11 +4,11 @@ using DG.Tweening;
 public class RotateUI : MonoBehaviour
 {
     [Header("Rotation Settings")]
-    public float duration = 150f;
+    public float duration = 300f;
 
     private RectTransform rectTransform;
 
-    void Start()
+    void OnEnable()
     {
         rectTransform = GetComponent<RectTransform>();
 
@@ -17,4 +17,8 @@ public class RotateUI : MonoBehaviour
             .SetEase(Ease.Linear)
             .SetLoops(-1, LoopType.Restart);
     }
+
+    private void OnDisable() => rectTransform.DOKill();
+
+    private void OnDestroy() => rectTransform.DOKill();
 }
